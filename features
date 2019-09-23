@@ -1,0 +1,64 @@
+Login -> Create account (Admin ?)
+
+Menu:
+  Dashboard
+  Meetings
+  Book a room
+  Settings
+  ---------
+  Logout -> Delete account
+
+/dashboard:
+
+  - Module 'Meetings':
+    - Time in meeting today
+    - Time in meeting this week
+    - Time in meeting this month
+    - Time in meeting this year
+
+  - Module 'Next meetings':
+    - List of next meetings (meeting name, room name, starting time)
+    + list all button (redirect to /meetings)
+
+  - Module 'Rooms info':
+    - Number of rooms currently free
+    - Number of rooms currently occupied
+    + button 'Book a meeting room' (redirect to /booking)
+
+  - Module 'Last rooms':
+    - Name of rooms lately booked
+
+  - Module 'Stats'
+    - Minimum duration of a meeting
+    - Average duration of a meeting
+    - Maximum duration of a meeting
+
+  - Rooms most often reserved on (histogram)
+    - Number of meetings per day of the week
+
+/meetings
+
+  - List all meetings
+      https://fullcalendar.io/docs/list-view-demo
+  
+  - onClick : dialogBox with reservation details
+    -> if owner: cancel meeting
+    -> else: confirm / maybe / refuse
+
+/booking
+
+  - Step 1: Module 'select a room'
+    - From, To: input type DateTime
+    - Equipments: checkboxes
+    - Capacity: input type number
+
+  - Step 2: Module personalisation (optional)
+    - Meeting name + descriptions
+    - Add attendees
+
+/settings
+
+  - Module manage equipments
+    - List equipments + add button + onClick (edit / delete)
+  - Module manage rooms
+    - List rooms + add button + onClick (edit / delete)
