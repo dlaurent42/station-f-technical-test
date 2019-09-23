@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# This scripts checks if database is created with a user profile, creates it not and run server
+# This scripts checks if database is created with a user profile, creates it if not and run server
 
 # Check if .env file exists
 if [[ ! -f ".env" ]]
