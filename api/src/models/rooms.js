@@ -23,7 +23,8 @@ const RoomsSchema = new Schema({
   capacity: {
     type: Number,
     required: true,
-    validate: value => validator.isInt(value, { min: 1, max: 99 }),
+    min: 1,
+    max: 99,
   },
   equipments: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -47,4 +48,4 @@ RoomsSchema.pre('save', function (next) {
   next();
 });
 
-export default model('Rooms', RoomsSchema, 'rooms');
+export default model('Rooms', RoomsSchema);

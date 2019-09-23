@@ -63,4 +63,4 @@ ReservationsSchema.pre('save', function (next) {
   next();
 });
 
-export default model('Rooms', ReservationsSchema);
+export default model('Reservations', ReservationsSchema);

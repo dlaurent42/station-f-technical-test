@@ -95,4 +95,4 @@ UsersSchema.methods.comparePassword = function (candidatePassword, cb) {
   ));
 };
 
-export default model('Users', UsersSchema, 'users');
+export default model('Users', UsersSchema);
