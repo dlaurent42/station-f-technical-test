@@ -12,8 +12,8 @@ const EquipementsSchema = new Schema({
     required: true,
     unique: true,
     trim: true,
-    validate: value => validator.isLength(value, { min: 2, max: 15 }) && validator.isAscii(value),
+    validate: value => validator.isLength(value, { min: 2, max: 45 }) && validator.isAscii(value),
   },
 });
 
-export default model('Equipments', EquipementsSchema, 'equipments');
+export default model('Equipments', EquipementsSchema);
