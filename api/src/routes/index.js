@@ -1,10 +1,13 @@
 /* Middleware(s) */
 
 /* Routes(s) */
+import getRooms from './rooms/get';
 
 const routes = {
   '': [],
-  '/rooms': [],
+  '/rooms': [
+    getRooms,
+  ],
   '/reservations': [],
 };
 
