@@ -33,6 +33,9 @@ then
   # Switch database and create user
   mongo "$DATABASE_NAME" --eval "db.createUser({ user: \"$DATABASE_USER\", pwd: \"$DATABASE_PASS\", roles: [\"readWrite\"] })"
 
+  # Feed database using javascript
+  node -r esm scripts/feed.js
+
   # Edit config file
   sed 's/DATABASE_INIT=false/DATABASE_INIT=true/g' .env > .env.tmp && mv .env.tmp .env
 
