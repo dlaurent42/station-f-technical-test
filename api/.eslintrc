@@ -13,6 +13,8 @@
     "allowImportExportEverywhere": true
   },
   "rules": {
+    "object-curly-newline": "off",
+    "no-underscore-dangle": "off",
     "padded-blocks": "off",
     "no-console": "warn",
     "func-names": "off",
