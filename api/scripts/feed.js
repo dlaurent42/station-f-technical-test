@@ -1,19 +1,15 @@
 import mongoose from 'mongoose';
-import {
-  uniqBy,
-  get,
-  find,
-  omit,
-} from 'lodash';
+import { uniqBy, get, find, omit } from 'lodash';
 
 // Import data from json input
 import data from '../assets/rooms.json';
+import users from '../assets/users.json';
 
 // Import config
 import { DATABASE } from '../src/config';
 
 // Import models
-import { Equipments, Rooms } from '../src/models';
+import { Equipments, Rooms, Users } from '../src/models';
 
 // Function to add equipements to database
 const addEquipments = equipments => (
@@ -29,6 +25,16 @@ const addEquipments = equipments => (
 const addRooms = rooms => (
   new Promise((resolve, reject) => (
     Rooms.insertMany(rooms, (error, docs) => {
+      if (error) reject(error);
+      else resolve(docs);
+    })
+  ))
+);
+
+// Function to add users to database
+const addUsers = () => (
+  new Promise((resolve, reject) => (
+    Users.insertMany(users, (error, docs) => {
       if (error) reject(error);
       else resolve(docs);
     })
@@ -58,6 +64,7 @@ const feed = () => (
         // Add rooms
         return addRooms(rooms);
       })
+      .then(() => addUsers())
       .then(() => resolve())
       .catch(err => reject(err));
   })
@@ -65,7 +72,4 @@ const feed = () => (
 
 feed()
   .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+  .catch(() => process.exit(1));
