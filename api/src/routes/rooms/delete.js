@@ -1,17 +1,12 @@
 import express from 'express';
 import { Rooms } from '../../models';
+import { deleteOneById } from '../../helpers';
 
 /*
-  This route deletes a room from the database.
+  This route deletes a room from the database based on its id.
 */
-export default express.Router().delete('/:id', (req, res) => {
-
-  new Promise((resolve, reject) => (
-    Rooms.findByIdAndRemove(req.params.id, (error, data) => {
-      if (error) reject(error);
-      resolve(data);
-    })
-  ))
-    .then(payload => res.status(200).json({ success: true, payload }))
-    .catch(error => res.status(500).json({ success: false, message: error.message }));
-});
+export default express.Router().delete('/:id', (req, res) => (
+  deleteOneById(Rooms, req.params.id)
+    .then(() => res.status(200).json({ success: true }))
+    .catch(error => res.status(500).json({ success: false, message: error.message }))
+));
