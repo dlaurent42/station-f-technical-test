@@ -14,6 +14,11 @@ const EquipementsSchema = new Schema({
     trim: true,
     validate: value => validator.isLength(value, { min: 2, max: 45 }) && validator.isAscii(value),
   },
-});
+}, { versionKey: false });
+
+EquipementsSchema.statics.verifyName = value => (
+  validator.isLength(value, { min: 2, max: 45 }) && validator.isAscii(value)
+);
+
 
 export default model('Equipments', EquipementsSchema);

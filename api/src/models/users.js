@@ -44,9 +44,14 @@ const UsersSchema = new Schema({
     type: String,
     trim: true,
   },
+  role: {
+    type: String,
+    default: 'user',
+    enum: ['user', 'admin'],
+  },
   createdAt: Date,
   updatedAt: Date,
-});
+}, { versionKey: false });
 
 UsersSchema.pre('update', function (next) {
   // Update 'updatedAt'
@@ -75,24 +80,40 @@ UsersSchema.pre('save', function (next) {
   if (!this.isModified('password')) return next();
 
   // Generate a salt
-  return bcrypt.genSalt(10, function (err, salt) {
+
+  return bcrypt.genSalt(10, (err, salt) => {
     if (err) return next(err);
 
     // Hash the password using generated salt
-    return bcrypt.hash(this.password, salt, function (error, hash) {
+    return bcrypt.hash(this.password, salt, (error, hash) => {
       if (error) return next(error);
 
       // Override the cleartext password with the hashed one
       this.password = hash;
+      this.salt = salt;
       return next();
     });
   });
 });
 
-UsersSchema.methods.comparePassword = function (candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => (
-    (err) ? cb(err) : cb(null, isMatch)
-  ));
-};
+UsersSchema.statics.verifyFirstname = value => (
+  validator.matches(value, /^[a-zA-Z]([\w -]*[a-zA-Z])?$/g)
+);
+UsersSchema.statics.verifyLastname = value => (
+  validator.matches(value, /^[a-zA-Z]([\w -]*[a-zA-Z])?$/g)
+);
+UsersSchema.statics.verifyUsername = value => (
+  validator.isAlphanumeric(value)
+);
+UsersSchema.statics.verifyEmail = value => (
+  validator.isEmail(value)
+);
+UsersSchema.statics.verifyPassword = value => (
+  typeof value === 'string' && value.length < 30
+);
+UsersSchema.statics.verifyRole = value => (
+  typeof value === 'undefined' || ['user', 'admin'].includes(value)
+);
+
 
 export default model('Users', UsersSchema);
