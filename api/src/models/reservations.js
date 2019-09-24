@@ -1,4 +1,5 @@
 import mongoose, { Schema, model } from 'mongoose';
+import moment from 'moment';
 
 /*
   Reservations model contains all reservations by room.
@@ -13,33 +14,23 @@ const ReservationsSchema = new Schema({
     type: Date,
     required: true,
   },
+  duration: {
+    type: Number,
+    required: true,
+    min: 30,
+    max: 60 * 3,
+  },
   room: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Rooms',
   },
-  attendees: [{
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Users',
-    },
-    role: {
-      type: String,
-      required: true,
-      trim: true,
-      default: 'owner',
-      enum: ['owner', 'mandatory', 'optional'],
-    },
-    participationStatus: {
-      type: String,
-      required: true,
-      trim: true,
-      default: 'waiting for confirmation',
-      enum: ['accepted', 'rejected', 'maybe', 'waiting for confirmation'],
-    },
-  }],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users',
+  },
   createdAt: Date,
   updatedAt: Date,
-});
+}, { versionKey: false });
 
 ReservationsSchema.pre('update', function (next) {
   // Update 'updatedAt'
@@ -62,5 +53,13 @@ ReservationsSchema.pre('save', function (next) {
 
   next();
 });
+
+ReservationsSchema.statics.verifyFrom = value => (
+  moment().add(10, 'minutes').diff(moment(value)) < 0
+);
+
+ReservationsSchema.statics.verifyDuration = value => (
+  Number.isInteger(value) && value >= 30 && value <= 60 * 3 && value % 30 === 0
+);
 
 export default model('Reservations', ReservationsSchema);

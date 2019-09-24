@@ -32,7 +32,7 @@ const RoomsSchema = new Schema({
   }],
   createdAt: Date,
   updatedAt: Date,
-});
+}, { versionKey: false });
 
 RoomsSchema.pre('update', function () {
   this.updatedAt = Date.now();
@@ -47,5 +47,17 @@ RoomsSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
 });
+
+RoomsSchema.statics.verifyName = value => (
+  validator.isLength(value, { min: 2, max: 15 }) && validator.isAscii(value)
+);
+
+RoomsSchema.statics.verifyDescription = value => (
+  validator.isLength(value, { min: 2, max: 255 }) && validator.isAscii(value)
+);
+
+RoomsSchema.statics.verifyCapacity = value => (
+  Number.isInteger(value) && value >= 1 && value <= 99
+);
 
 export default model('Rooms', RoomsSchema);
