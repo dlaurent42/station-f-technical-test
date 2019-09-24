@@ -6,6 +6,7 @@ import DATABASE from './constants/database';
 
 /* Functions */
 import setRouter from './functions/setRouter';
+import setMongo from './functions/setMongo';
 
 export {
   API,
@@ -13,4 +14,5 @@ export {
   CORS,
   DATABASE,
   setRouter,
+  setMongo,
 };

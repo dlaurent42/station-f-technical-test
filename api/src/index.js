@@ -1,27 +1,24 @@
 import cors from 'cors';
 import http from 'http';
 import express from 'express';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
 
-import {
-  API,
-  // CORS,
-  DATABASE,
-  setRouter,
-} from './config';
+import { API, CORS, setMongo, setRouter } from './config';
 
 // Setup the application
 const app = express();
-app.use(bodyParser.json());
+
+// Since express v4.16.0, express.json() replaces bodyparser.json()
+// More details here: https://stackoverflow.com/questions/47232187/express-json-vs-bodyparser-json/47232318#47232318
+app.use(express.json());
+
+// Cors is used to allow only URLs from a white list
 // app.use(cors(CORS));
-app.use(cors());
 
 // Setup routes
 setRouter(app);
 
 // Connect to database (persistent)
-mongoose.connect(DATABASE.PATH, DATABASE.OPTIONS).catch(() => {});
+setMongo();
 
 // Run server
 http.Server(app).listen(API.PORT, API.HOST);
