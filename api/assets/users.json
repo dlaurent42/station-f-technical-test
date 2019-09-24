@@ -1,0 +1,17 @@
+[
+  {
+    "firstname": "damien",
+    "lastname": "laurent",
+    "username": "dlaurent",
+    "email": "dlaurent@student.42.fr",
+    "password": "awesome"
+  },
+  {
+    "firstname": "damien",
+    "lastname": "laurent",
+    "username": "admin",
+    "email": "you@student.42.fr",
+    "password": "awesome",
+    "role": "admin"
+  }
+]
