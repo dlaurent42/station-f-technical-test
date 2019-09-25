@@ -1,21 +1,33 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <app-header />
     <router-view/>
+    <app-footer />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import * as types from './store/types/user';
-  export default {
-    name: 'app',
-    created () {
-      this.$store.dispatch(types.ACTION_AUTOLOGIN);
-    }
-  }
+import Header from './components/navigation/Header.vue';
+import Footer from './components/navigation/Footer.vue';
+
+export default {
+  name: 'app',
+  components: {
+    'app-header': Header,
+    'app-footer': Footer,
+  },
+  computed: {
+    ...mapGetters({
+      user: types.GET_USER,
+    }),
+  },
+  created() {
+    this.$store.dispatch(types.ACTION_AUTOLOGIN);
+    console.log(this.user.id);
+  },
+};
 </script>
 
 <style lang="scss">

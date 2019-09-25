@@ -7,23 +7,28 @@ Vue.use(Router);
 const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: () => import('../views/Home.vue'),
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/About.vue'),
-    },
-  ],
+  routes: [{
+    path: '/',
+    name: 'dashboard',
+    component: () => import('../views/Dashboard.vue'),
+  }, {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Login.vue'),
+  }, {
+    path: '/booking',
+    name: 'booking',
+    component: () => import('../views/Booking.vue'),
+  }, {
+    path: '/reservations',
+    name: 'reservations',
+    component: () => import('../views/Reservations.vue'),
+  }],
 });
 
 // Navigation guards
 router.beforeEach((to, from, next) => {
-  console.log('global beforeEach');
+  console.log('global beforeEach', from, to); // eslint-disable-line
   next();
 });
 
