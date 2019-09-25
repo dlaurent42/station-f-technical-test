@@ -1,9 +1,11 @@
+import axios from 'axios';
 import * as types from '../../types/user';
-import axios from '../../../services/axios';
+
+const instance = axios.create({ baseURL: process.env.API_URI });
 
 export default {
   [types.ACTION_LOGIN]: ({ commit }, payload) => (
-    axios.get(`/users/login?username=${payload.username}&password=${payload.password}`)
+    instance.get(`/users/login?username=${payload.username}&password=${payload.password}`)
       .then((response) => {
         console.log(response);
         localStorage.setItem('access-token', response.data.accessToken);
