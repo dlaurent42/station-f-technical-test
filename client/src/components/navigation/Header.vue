@@ -1,17 +1,14 @@
 <template>
   <div class="menu" v-if="isAuthenticated">
-    <div id="menu-logo">
-      <router-link to="/" v-if="isAuthenticated" exact>
-        <img src="@/assets/logo.png" alt="logo" class="logo"/>
-      </router-link>
-      <img v-else src="@/assets/logo.png" alt="logo" class="logo"/>
-    </div>
+    <router-link id="menu-logo" to="/" exact>
+      <img src="@/assets/logo.png" alt="logo" class="logo"/>
+    </router-link>
     <div class="menu-burger" @click="show = !show">
       <span class="menu-burger-bar" :class="{ opened: show, closed: !show }"/>
       <span class="menu-burger-bar" :class="{ opened: show, closed: !show }"/>
       <span class="menu-burger-bar" :class="{ opened: show, closed: !show }"/>
     </div>
-    <div v-if="isAuthenticated && show" class="menu-container">
+    <div v-if="show" class="menu-container">
       <div class="menu-items">
         <router-link
           @click.native="show = !show"
