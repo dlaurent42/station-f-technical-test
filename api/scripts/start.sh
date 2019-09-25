@@ -26,6 +26,8 @@ mongod --dbpath database --bind_ip "$DATABASE_HOST" --port "$DATABASE_PORT" &
 # Store process id
 process_id=$!
 
+sleep 8
+
 # Check if database has already been initialized
 if [ "$DATABASE_INIT" = "false" ]
 then

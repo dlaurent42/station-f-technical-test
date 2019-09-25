@@ -4,14 +4,16 @@
     "lastname": "laurent",
     "username": "dlaurent",
     "email": "dlaurent@student.42.fr",
-    "password": "awesome"
+    "password": "$2b$10$WGB6ZVq0rIibEGvmMQ5YZOlQcJ1h87oBwjxAU/5vNJWqaDgxv8Y/2",
+    "salt": "$2b$10$WGB6ZVq0rIibEGvmMQ5YZO"
   },
   {
     "firstname": "damien",
     "lastname": "laurent",
     "username": "admin",
     "email": "you@student.42.fr",
-    "password": "awesome",
+    "password": "$2b$10$WGB6ZVq0rIibEGvmMQ5YZOlQcJ1h87oBwjxAU/5vNJWqaDgxv8Y/2",
+    "salt": "$2b$10$WGB6ZVq0rIibEGvmMQ5YZO",
     "role": "admin"
   }
 ]
