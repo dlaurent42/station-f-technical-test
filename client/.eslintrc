@@ -8,7 +8,7 @@
     "@vue/airbnb",
   ],
   "rules": {
-    "no-console": "warn"
+    "no-console": "off"
   },
   "parserOptions": {
     "parser": "babel-eslint",
