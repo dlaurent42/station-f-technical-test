@@ -1,6 +1,9 @@
 /* Middleware(s) */
+import authMiddleware from '../middleware/auth';
 
 /* Routes(s) */
+import getRefreshAuth from './auth/refresh';
+
 import deleteEquipments from './equipments/delete';
 import getEquipments from './equipments/get';
 import postEquipments from './equipments/post';
@@ -21,8 +24,13 @@ import getUsers from './users/get';
 import getLoginUsers from './users/getLogin';
 import postUsers from './users/post';
 
-const routes = {
-  '': [],
+export default {
+  '': [
+    authMiddleware,
+  ],
+  '/auth': [
+    getRefreshAuth,
+  ],
   '/equipments': [
     deleteEquipments,
     getEquipments,
@@ -48,5 +56,3 @@ const routes = {
     postUsers,
   ],
 };
-
-export default routes;
