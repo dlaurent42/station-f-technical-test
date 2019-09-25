@@ -8,6 +8,16 @@
   </div>
 </template>
 
+<script>
+import * as types from './store/types/user';
+  export default {
+    name: 'app',
+    created () {
+      this.$store.dispatch(types.ACTION_AUTOLOGIN);
+    }
+  }
+</script>
+
 <style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
