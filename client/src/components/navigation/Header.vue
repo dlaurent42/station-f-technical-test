@@ -58,6 +58,7 @@ export default {
   },
   methods: {
     onLogout() {
+      this.show = false;
       this.$store.dispatch(types.ACTION_LOGOUT);
     },
   },
@@ -163,6 +164,7 @@ export default {
   width: 100vw;
   background: white;
   color: grey;
+  z-index: 1000;
 
   & .menu-items {
     position: fixed;

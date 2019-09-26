@@ -36,7 +36,7 @@ html {
   scroll-behavior: smooth;
   height: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {

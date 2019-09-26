@@ -3,13 +3,13 @@
     <mu-form ref="form" :model="form" class="login-form">
       <h1>LOGIN</h1>
       <mu-form-item label="username or email" prop="username" :rules="usernameRules">
-        <mu-text-field v-model="form .username" prop="username" />
+        <mu-text-field v-model="form.username" prop="username" />
       </mu-form-item>
       <mu-form-item label="password" prop="password" :rules="passwordRules">
-        <mu-text-field type="password" v-model="form .password" prop="password" />
+        <mu-text-field type="password" v-model="form.password" prop="password" />
       </mu-form-item>
       <mu-form-item>
-        <mu-button color="#181818" @click="onSubmit">SUBMIT</mu-button>
+        <mu-button color="rgb(24, 45, 67)" @click="onSubmit">SUBMIT</mu-button>
       </mu-form-item>
       <div class="submit-error" v-if="submitError !== null">{{ submitError }}</div>
     </mu-form>
@@ -86,6 +86,13 @@ export default {
 
     & .mu-button {
       margin: auto;
+    }
+
+    & .mu-form-item__focus {
+      color: rgb(24, 45, 67);
+    }
+    & .mu-input__focus {
+      color: rgb(24, 45, 67);
     }
 
   }
