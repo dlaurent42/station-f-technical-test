@@ -24,7 +24,11 @@ export default express.Router().put('/:id', (req, res) => {
       }
       return updateOneById(Equipments, id, { name });
     })
-    .then(payload => res.status(200).json({ success: true, payload }))
+    .then(payload => (
+      (isEmpty(payload))
+        ? res.status(200).json({ success: false, message: 'Update failed' })
+        : res.status(200).json({ success: true, payload })
+    ))
     .catch(error => (
       res.statusCode === 200
         ? res.status(500).json({ success: false, message: 'An error occured' })
