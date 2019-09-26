@@ -79,7 +79,7 @@ export default express.Router().get('/login', (req, res) => {
     })
     .catch(error => (
       res.statusCode === 200
-        ? res.status(500).json({ success: false, message: error.message })
+        ? res.status(500).json({ success: false, message: 'An error occured' })
         : res.json({ success: false, message: error.message })
     ));
 });

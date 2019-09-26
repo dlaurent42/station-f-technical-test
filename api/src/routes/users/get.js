@@ -13,5 +13,5 @@ export default express.Router().get('/', (req, res) => (
       success: true,
       payload: payload.map(user => ({ _id: user._id, username: user.username, role: user.role })),
     }))
-    .catch(error => res.status(500).json({ success: false, message: error.message }))
+    .catch(() => res.status(500).json({ success: false, message: 'An error occured' }))
 ));

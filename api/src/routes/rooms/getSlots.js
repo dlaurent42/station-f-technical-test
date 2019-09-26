@@ -40,5 +40,5 @@ export default express.Router().get('/slots', (req, res) => {
         .map(reservation => omit(reservation, 'room')),
       })),
     }))
-    .catch(error => res.status(500).json({ success: false, message: error.message }));
+    .catch(() => res.status(500).json({ success: false, message: 'An error occured' }));
 });

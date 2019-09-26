@@ -14,5 +14,5 @@ export default express.Router().get('/', (req, res) => {
   // Fetch data
   return fetchAll(Equipments, filters)
     .then(payload => res.status(200).json({ success: true, payload }))
-    .catch(error => res.status(500).json({ success: false, message: error.message }));
+    .catch(() => res.status(500).json({ success: false, message: 'An error occured' }));
 });

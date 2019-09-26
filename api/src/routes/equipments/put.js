@@ -27,7 +27,7 @@ export default express.Router().put('/:id', (req, res) => {
     .then(payload => res.status(200).json({ success: true, payload }))
     .catch(error => (
       res.statusCode === 200
-        ? res.status(500).json({ success: false, message: error.message })
+        ? res.status(500).json({ success: false, message: 'An error occured' })
         : res.json({ success: false, message: error.message })
     ));
 });
