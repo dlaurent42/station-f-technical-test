@@ -56,26 +56,36 @@
       @sort-change="onSortChange"
       :data="filteredRooms"
       no-data-text="No rooms found."
+      class="booking-table"
+      rowClassName="booking-table-row"
     >
       <template slot="expand" slot-scope="prop">
         <div style="padding: 24px;" >
           <mu-list>
             <mu-list-item-title>{{ prop.row.name }}</mu-list-item-title>
+            <mu-list-item>Capacity: {{ prop.row.capacity }} people</mu-list-item>
             <mu-list-item>{{ prop.row.description }}</mu-list-item>
             <mu-list-item-title>Equipments</mu-list-item-title>
             <mu-list-item v-if="prop.row.equipments.length">
-              <mu-chip v-for="equipment in prop.row.equipments" :key="equipment.id">
+              <mu-chip v-for="equipment in prop.row.equipments" :key="equipment.id" class="chip">
                 {{ equipment.name }}
               </mu-chip>
             </mu-list-item>
             <mu-list-item v-else>No equipments in this meeting room.</mu-list-item>
             <mu-list-item-title>Reservations</mu-list-item-title>
-            <div v-if="prop.row.reservations.length">
-              <p v-for="reservation in prop.row.reservations" :key="reservation._id">
-                Reserved by {{ reservation.user.username }} from {{ reservation.from }} to {{ reservation.to }}
-              </p>
-            </div>
+            <ul v-if="prop.row.reservations.length">
+              <li v-for="reservation in prop.row.reservations" :key="reservation._id">
+                Reserved by
+                {{ reservation.user.username }}
+                {{ formattedFromTo(reservation.from, reservation.to) }}
+              </li>
+            </ul>
             <mu-list-item v-else>No reservations for this day.</mu-list-item>
+            <mu-flex fill align-items="center" justify-content="center">
+              <mu-button small color="rgba(24, 45, 67, .8)" @click="onSubmit(prop.row._id)">
+                Book this room
+              </mu-button>
+            </mu-flex>
           </mu-list>
         </div>
       </template>
@@ -90,6 +100,8 @@
 
 <script>
 import moment from 'moment';
+import { mapGetters } from 'vuex';
+import * as types from '../../store/types/user';
 import axios from '../../services/axios';
 import endDateFormat from '../../utils/datetimeFromChineseToEnglish';
 
@@ -153,7 +165,15 @@ export default {
     },
     endDateFormat, // Chinese to English...
   }),
+  computed: {
+    ...mapGetters({
+      user: types.GET_USER,
+    }),
+  },
   methods: {
+    formattedFromTo(from, to) {
+      return `from ${moment(from).format('HH:mm')} to ${moment(to).format('HH:mm')}`;
+    },
     onSortChange({ name, order }) {
       this.filteredRooms = this.filteredRooms.sort((a, b) => {
         if (typeof a[name] === 'number' && typeof b[name] === 'number') return (order === 'asc') ? a[name] - b[name] : b[name] - a[name];
@@ -175,20 +195,19 @@ export default {
             .then((response) => {
               // Convert datetime to moment
               const from = moment.utc(this.form.datetime);
-              const to = moment.utc(from).add(this.form.duration, 'minutes');
-              console.log('onDateChange');
+              const to = moment.utc(from).add(parseInt(this.form.duration, 10), 'minutes');
 
               // Filter rooms based on slots
               this.filteredRooms = response.data.payload.filter(room => (
                 !room.reservations.some(reservation => (
-                  (moment.utc(reservation.from).diff(from) <= 0 && from.diff(moment.utc(reservation.to)) < 0)
-                  || (moment.utc(reservation.from).diff(to) < 0 && moment.utc(reservation.to).diff(to) < 0)
+                  from.diff(moment.utc(reservation.to)) < 0
+                  && moment.utc(reservation.from).diff(to) < 0
                 ))
               ));
 
               // Assign results to rooms
               this.rooms = this.filteredRooms;
-
+              console.log(this.rooms.filter(room => room.name === 'Salle de ouf')[0].reservations);
               // Now filter on other static fields
               this.onOtherChanges();
             })
@@ -204,7 +223,7 @@ export default {
       this.filteredRooms = this.rooms.filter(room => (
 
         // Verify capacity
-        room.capacity >= this.form.capacity
+        room.capacity >= parseInt(this.form.capacity, 10)
         && (
 
           // Verify if any equipment is required
@@ -219,6 +238,30 @@ export default {
 
       this.loading = false;
     },
+    onSubmit(roomId) {
+      this.$refs.form.validate()
+        .then((isValid) => {
+          if (!isValid) return;
+
+          // Put data in variable for better visibility
+          const data = {
+            from: new Date(this.form.datetime),
+            duration: parseInt(this.form.duration, 10),
+            roomId,
+            userId: this.user.id,
+          };
+
+          // Send request
+          axios.post('/reservations', data)
+            .then((res) => {
+              console.log(res.data);
+              this.onDateChange();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+    },
   },
   created() {
     // Fetch reservations slots and rooms for today + list of available equipments
@@ -227,7 +270,6 @@ export default {
       .then((response) => {
         this.rooms = response.data.payload;
         this.filteredRooms = response.data.payload;
-        console.log(response.data.payload);
         return axios.get('/equipments');
       })
       .then((response) => {
@@ -259,5 +301,24 @@ export default {
       color: rgb(24, 45, 67);
     }
   }
+
+  & .booking-table {
+    background: transparent;
+    & .is-expand div {
+      background-color: #efefef;
+      color: #343434;
+      & .chip {
+        margin: 8px;
+        vertical-align: middle;
+        background: #bbb;
+        color: #343434;
+      }
+    }
+  }
+}
+</style>
+<style>
+.booking-table-row  {
+  cursor: pointer;
 }
 </style>
