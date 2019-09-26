@@ -53,8 +53,8 @@ export default {
   ],
   '/users': [
     getUsers,
-    getUsersId,
     getUsersLogin,
+    getUsersId,
     postUsers,
   ],
 };
