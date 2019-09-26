@@ -25,7 +25,6 @@ export default {
   },
   created() {
     this.$store.dispatch(types.ACTION_AUTOLOGIN);
-    console.log(this.user.id);
   },
 };
 </script>
