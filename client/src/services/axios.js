@@ -1,7 +1,8 @@
 import axios from 'axios';
+import router from '../router';
 
 // Create an instance of axios and configure base URL
-const instance = axios.create({ baseURL: process.env.API_URI });
+const instance = axios.create({ baseURL: process.env.VUE_APP_API_URI });
 
 // Add a request interceptor
 instance.interceptors.request.use(
@@ -22,8 +23,8 @@ instance.interceptors.response.use(
     const originalRequest = error.config;
 
     // Check if response status is 401 and if original request was the one for refreshing token
-    if (error.response.status === 401 && originalRequest.url === `${process.env.API_URI}/auth/refresh`) {
-      window.location.replace('/login');
+    if (error.response.status === 401 && originalRequest.url === `${process.env.VUE_APP_API_URI}/auth/refresh`) {
+      router.replace('/login');
       return Promise.reject(error);
     }
 
@@ -39,7 +40,7 @@ instance.interceptors.response.use(
             axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
             return axios(originalRequest);
           }
-          window.location.replace('/login');
+          router.replace('/login');
           return Promise.reject(error);
         });
     }
