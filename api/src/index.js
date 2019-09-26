@@ -13,6 +13,7 @@ app.use(express.json());
 
 // Cors is used to allow only URLs from a white list
 // app.use(cors(CORS));
+app.use(cors());
 
 // Setup routes
 setRouter(app);
