@@ -14,6 +14,7 @@
           @click.native="show = !show"
           class="menu-item"
           to="/"
+          tag="div"
         >
           Dashboard
         </router-link>
@@ -21,6 +22,7 @@
           @click.native="show = !show"
           class="menu-item"
           to="/reservations"
+          tag="div"
         >
           Reservations
         </router-link>
@@ -28,9 +30,13 @@
           @click.native="show = !show"
           class="menu-item"
           to="/booking"
+          tag="div"
         >
           Book a room
         </router-link>
+        <div @click="onLogout" class="menu-item">
+          Logout
+        </div>
       </div>
     </div>
   </div>
@@ -41,16 +47,19 @@ import { mapGetters } from 'vuex';
 import * as types from '../../store/types/user';
 
 export default {
-  data() {
-    return {
-      show: false,
-    };
-  },
+  data: () => ({
+    show: false,
+  }),
   computed: {
     ...mapGetters({
       isAuthenticated: types.IS_AUTHENTICATED,
       isAdmin: types.IS_ADMIN,
     }),
+  },
+  methods: {
+    onLogout() {
+      this.$store.dispatch(types.ACTION_LOGOUT);
+    },
   },
 };
 </script>
@@ -163,6 +172,7 @@ export default {
     flex-direction: column;
     align-items: center;
     transform: translate(-50%, -50%);
+    cursor: pointer;
     & .menu-logo {
       padding: 30px 0;
       & img {

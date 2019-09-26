@@ -26,6 +26,9 @@ export default {
   },
   [types.ACTION_LOGOUT]: ({ commit }) => {
     commit(types.MUTATE_LOGOUT);
+    localStorage.removeItem('access-token');
+    localStorage.removeItem('refresh-token');
+    router.replace('/login');
   },
   [types.ACTION_ERROR]: ({ commit }, payload) => {
     commit(types.MUTATE_ERROR, payload);

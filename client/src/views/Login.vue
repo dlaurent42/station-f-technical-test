@@ -1,9 +1,7 @@
 <template>
   <div id="login">
     <form @submit.prevent="onSubmit" class="login-form">
-      {{ error.username }}
-      {{ error.password }}
-      {{ formError }}
+      <h1>LOGIN</h1>
       <md-field :class="{ 'md-invalid': error.username }">
         <label>Username</label>
         <md-input v-model="username"></md-input>
@@ -15,7 +13,7 @@
         <span v-if="error.password !== null" class="md-error">Password is required</span>
       </md-field>
       <md-button type="submit" class="md-raised md-primary">Submit</md-button>
-      <span v-if="formError !== null">{{ formError }}</span>
+      <div class="error" v-if="formError !== null">{{ formError }}</div>
     </form>
   </div>
 </template>
@@ -59,3 +57,39 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+#login {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-color: rgb(24,24,24);
+
+  .login-form {
+    width: 400px;
+    background-color: #eee;
+    padding: 40px;
+    border-radius: 5px;
+    // box-shadow: 10px 10px 0px #888;
+
+    .error {
+      color: #ff1744;
+    }
+
+  }
+  @media (max-width: 450px) {
+    background-color: #eee;
+
+    & .login-form {
+      width: 300px;
+    }
+  }
+
+
+}
+</style>
