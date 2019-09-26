@@ -23,9 +23,6 @@ export default {
       user: types.GET_USER,
     }),
   },
-  created() {
-    this.$store.dispatch(types.ACTION_AUTOLOGIN);
-  },
 };
 </script>
 
