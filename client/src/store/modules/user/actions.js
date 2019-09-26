@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 import axios from '../../../services/axios';
 import * as types from '../../types/user';
-import router from '../../../router';
+import router from '../../../routes';
 
 export default {
   [types.ACTION_LOGIN]: ({ commit }, payload) => (
