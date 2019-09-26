@@ -3,7 +3,7 @@ import VueMaterial from 'vue-material';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/black-green-light.css';
 import App from './App.vue';
-import router from './router';
+import router from './routes';
 import store from './store';
 
 Vue.config.productionTip = false;

@@ -12,19 +12,19 @@ const router = new Router({
   routes: [{
     path: '/',
     name: 'dashboard',
-    component: () => import('../views/Dashboard.vue'),
+    component: () => import('./Dashboard/Dashboard.vue'),
   }, {
     path: '/login',
     name: 'login',
-    component: () => import('../views/Login.vue'),
+    component: () => import('./Login/Login.vue'),
   }, {
     path: '/booking',
     name: 'booking',
-    component: () => import('../views/Booking.vue'),
+    component: () => import('./Booking/Booking.vue'),
   }, {
     path: '/reservations',
     name: 'reservations',
-    component: () => import('../views/Reservations.vue'),
+    component: () => import('./Reservations/Reservations.vue'),
   }, {
     path: '*',
     redirect: '/',
