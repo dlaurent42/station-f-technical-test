@@ -1,6 +1,5 @@
 import express from 'express';
 import moment from 'moment';
-import { omit } from 'lodash';
 import { Rooms, Reservations } from '../../models';
 import { fetchAll, populate } from '../../helpers';
 
@@ -26,8 +25,8 @@ export default express.Router().get('/slots', (req, res) => {
       // Fetch reservations of the day
       return fetchAll(Reservations, {
         $and: [
-          { from: { $gte: moment.utc(moment(date).startOf('day')).format() } },
-          { to: { $lte: moment.utc(moment(date).endOf('day')).format() } },
+          { from: { $gte: moment.utc(date).startOf('day').format() } },
+          { to: { $lte: moment.utc(date).endOf('day').format() } },
         ],
       });
     })
@@ -35,9 +34,21 @@ export default express.Router().get('/slots', (req, res) => {
     .then(reservations => res.status(200).json({
       success: true,
       // Loop through rooms to assign relative reservations (sanitized)
-      payload: rooms.map(room => Object.assign(room, { reservations: reservations
-        .filter(reservation => reservation.room === room._id)
-        .map(reservation => omit(reservation, 'room')),
+      payload: rooms.map(room => ({
+        _id: room._id,
+        name: room.name,
+        description: room.description,
+        capacity: room.capacity,
+        equipments: room.equipments,
+        reservations: reservations
+          .filter(el => String(el.room) === String(room._id))
+          .map(el => ({
+            _id: el._id,
+            user: el.user,
+            from: el.from,
+            to: el.to,
+            duration: el.duration,
+          })),
       })),
     }))
     .catch(() => res.status(500).json({ success: false, message: 'An error occured' }));

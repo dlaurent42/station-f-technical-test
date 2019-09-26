@@ -47,8 +47,9 @@ export default express.Router().post('/', (req, res) => {
 
       // Check if slot is not already taken (looking for conflicts)
       return fetchOne(Reservations, {
+        room,
         $or: [
-          { $and: [{ from: { $lt: from }, to: { $gt: from } }] }, // eslint-disable-line
+          { $and: [{ from: { $lte: from }, to: { $gt: from } }] },
           { $and: [{ from: { $lt: to }, to: { $gt: to } }] },
         ],
       });

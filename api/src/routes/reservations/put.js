@@ -49,8 +49,9 @@ export default express.Router().put('/:id', (req, res) => {
       // Check if slot is not already taken (looking for conflicts)
       return fetchOne(Reservations, {
         _id: { $ne: id },
+        room,
         $or: [
-          { $and: [{ from: { $lt: from }, to: { $gt: from } }] }, // eslint-disable-line
+          { $and: [{ from: { $lte: from }, to: { $gt: from } }] },
           { $and: [{ from: { $lt: to }, to: { $gt: to } }] },
         ],
       });
@@ -66,7 +67,11 @@ export default express.Router().put('/:id', (req, res) => {
       // Create document
       return updateOneById(Reservations, id, { from, to, duration, room, user });
     })
-    .then(payload => res.status(200).json({ success: true, payload }))
+    .then(payload => (
+      (isEmpty(payload))
+        ? res.status(200).json({ success: false, message: 'Update failed' })
+        : res.status(200).json({ success: true, payload })
+    ))
     .catch(error => (
       res.statusCode === 200
         ? res.status(500).json({ success: false, message: 'An error occured' })
