@@ -26,6 +26,7 @@ const ROUTES = [
   // users
   { method: 'GET', url: '/users', scope: STATUS.PUBLIC },
   { method: 'GET', url: '/users/login', scope: STATUS.PUBLIC },
+  { method: 'GET', url: '/users/', scope: STATUS.PUBLIC },
   { method: 'POST', url: '/users', scope: STATUS.PUBLIC },
 ];
 

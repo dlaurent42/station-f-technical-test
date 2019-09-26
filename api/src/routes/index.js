@@ -21,7 +21,8 @@ import postRooms from './rooms/post';
 import putRooms from './rooms/put';
 
 import getUsers from './users/get';
-import getLoginUsers from './users/getLogin';
+import getUsersId from './users/getId';
+import getUsersLogin from './users/getLogin';
 import postUsers from './users/post';
 
 export default {
@@ -52,7 +53,8 @@ export default {
   ],
   '/users': [
     getUsers,
-    getLoginUsers,
+    getUsersId,
+    getUsersLogin,
     postUsers,
   ],
 };
