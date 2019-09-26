@@ -41,8 +41,8 @@ export default {
   methods: {
     onSubmit() {
       this.$refs.form.validate()
-        .then((result) => {
-          if (!result) return;
+        .then((isValid) => {
+          if (!isValid) return;
 
           // Reset errors
           this.$store.dispatch(types.ACTION_ERROR, null);
