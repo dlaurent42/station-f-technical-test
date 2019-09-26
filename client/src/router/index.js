@@ -33,10 +33,14 @@ const router = new Router({
 
 // Navigation guards: check if route required authentication
 router.beforeEach((to, from, next) => {
+  // Define routes auth
   const routesWithoutAuth = ['/login'];
   const routesWithNormalAuth = ['/', '/booking', '/reservations'];
-  if (routesWithNormalAuth.includes(to.path) && !store.getters[types.IS_AUTHENTICATED]) next('/login');
-  else if (routesWithoutAuth.includes(to.path) && store.getters[types.IS_AUTHENTICATED]) next('/');
+
+  // Try autologin if user wants to access route which requires auth without beeing authd
+  if (routesWithNormalAuth.includes(to.path) && !store.getters[types.IS_AUTHENTICATED]) {
+    store.dispatch(types.ACTION_AUTOLOGIN).then(res => next((res) ? true : '/login'));
+  } else if (routesWithoutAuth.includes(to.path) && store.getters[types.IS_AUTHENTICATED]) next('/');
   else next();
 });
 
