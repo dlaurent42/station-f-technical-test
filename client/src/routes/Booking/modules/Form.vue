@@ -1,6 +1,7 @@
 <template>
   <mu-form ref="form" :model="form" class="booking-form">
-    <mu-flex wrap="wrap" justify-content="between" direction="column">
+    <h3>Find the room that fit your needs</h3>
+    <mu-flex wrap="wrap" justify-content="between" direction="row" align-items="center" fill>
       <mu-form-item label="Date" prop="datetime" :rules="datetimeRules">
         <mu-date-input
           v-model="form.datetime"
@@ -26,7 +27,7 @@
           @change="onDateChange"
         />
       </mu-form-item>
-      <mu-form-item label="Room capacity" prop="capacity" :rules="capacityRules">
+      <mu-form-item label="Attendees" prop="capacity" :rules="capacityRules">
         <mu-text-field
           type="number"
           v-model="form.capacity"
@@ -35,6 +36,9 @@
           @change="onOtherChanges"
         />
       </mu-form-item>
+    </mu-flex>
+    <hr>
+    <mu-flex wrap="wrap" justify-content="start" direction="row" align-items="center" fill>
       <mu-form-item label="Equipments" prop="equipments">
         <mu-checkbox
           v-for="equipment in equipmentsList"
@@ -207,14 +211,22 @@ export default {
 
 <style lang="scss" scoped>
 .booking-form {
+  width: 80vw;
+  margin: 5vh 10vw;
+  display: flex;
+  flex-direction: column;
+  & h3 {
+    font-size: 20px;
+    padding: 40px 0;
+  }
   & .mu-form-item__focus {
-    color: rgb(24, 45, 67);
+    color: #34495e;
   }
   & .mu-input__focus {
-    color: rgb(24, 45, 67);
+    color: #34495e;
   }
   & .mu-checkbox-checked {
-    color: rgb(24, 45, 67);
+    color: #34495e;
   }
 }
 </style>

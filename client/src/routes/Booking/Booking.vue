@@ -1,27 +1,40 @@
 <template>
-  <mu-container id="booking">
-    <h1>BOOK A ROOM</h1>
-    <app-booking-form/>
-    <app-booking-table/>
-  </mu-container>
+  <div id="booking">
+    <app-section-title
+      primary="BOOK A MEETING ROOM"
+      secondary="Instantly and easily book unique meeting rooms and spaces."
+    />
+    <app-booking-form />
+    <hr>
+    <app-booking-table />
+  </div>
 </template>
 
 <script>
 import Form from './modules/Form.vue';
 import Table from './modules/Table.vue';
+import SectionTitle from '../../components/ui/SectionTitle.vue';
 
 export default {
   components: {
     'app-booking-form': Form,
     'app-booking-table': Table,
+    'app-section-title': SectionTitle,
   },
 };
 </script>
 
 <style lang="scss" scoped>
 #booking {
-  & h1 {
-    padding: 20px 0;
+
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  & hr {
+    width: 60vw;
+    margin: 5vh auto;
   }
 }
 </style>
