@@ -71,7 +71,8 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: -webkit-fill-available;
+  width: 100vw;
+  height: 80px;
   padding-left: 25px;
   padding-right: 15px;
   z-index: 9999;

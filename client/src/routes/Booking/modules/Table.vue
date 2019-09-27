@@ -145,6 +145,7 @@ export default {
   width: 80vw;
   padding: 5vh 10vw;
   margin: auto !important;
+  justify-content: center;
   & h3 {
     text-align: left;
     font-size: 20px;
@@ -153,7 +154,7 @@ export default {
   & .card {
     width: 100%;
     max-width: 375px;
-    margin: 30px auto;
+    margin: 30px 15px;
     & .card-actions {
       display: flex;
       flex-direction: row;

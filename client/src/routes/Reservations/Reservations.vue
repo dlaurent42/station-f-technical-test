@@ -1,28 +1,221 @@
 <template>
   <div id="reservations">
-    <h1>That's the reservations module!</h1>
-    <p>You should only get here if you're authenticated!</p>
-    <p v-if="reservations.lenght === 0">No reservation for now}</p>
-    <div v-else>
-      <div
-        v-for="reservation in reservations"
-        :key="reservation.id"
-      >
-        {{ reservation.from }}
+    <app-section-title
+      primary="RESERVATIONS"
+      secondary="You just arrived and wan't to check if you have time for a coffee?"
+    />
+    {{ selected }}
+    <mu-container class="reservations-wrapper">
+      <mu-tabs :value.sync="selected" color="rgb(44,44,44)" indicator-color="green" full-width>
+        <mu-tab>TODAY</mu-tab>
+        <mu-tab>WEEK</mu-tab>
+        <mu-tab>MONTH</mu-tab>
+        <mu-tab>YEAR</mu-tab>
+      </mu-tabs>
+      <div class="reservations-list">
+        <div class="reservations-sublist">
+          <div v-if="!reservations[selected]"></div>
+          <div v-else-if="reservations[selected].length">
+            <div v-for="(reservation, idx) in reservations[selected]" :key="reservation._id">
+              <div class="reservation-slot-wrapper">
+                <div class="reservation-slot">
+                  <div class="reservation-slot-content">
+                    <strong>{{ reservation.room.name }}</strong>
+                    {{ formattedDate(reservation.from) }}
+                    for
+                    {{ reservation.duration }}
+                    minutes
+                  </div>
+                  <font-awesome-icon
+                    @click="openAlert = true; selectedReservation = reservation._id"
+                    class="reservation-slot-icon"
+                    icon="trash-alt"
+                  />
+                </div>
+                <hr v-if="idx < reservations[selected].length - 1">
+              </div>
+            </div>
+          </div>
+          <div v-else class="reservation-no-slot">
+            <p>No reservations for now</p>
+            <mu-button @click="redirectToBooking">Book a meeting room</mu-button>
+          </div>
+        </div>
       </div>
-    </div>
+    </mu-container>
+    <mu-dialog title="Confirm deletion" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
+      Do you confirm deletion of this reservation ?
+      <mu-button class="alertAction" slot="actions" flat @click="openAlert = false">Cancel</mu-button>
+      <mu-button class="alertAction" slot="actions" color="#222" @click="onDeletion">Confirm</mu-button>
+    </mu-dialog>
   </div>
 </template>
 
 <script>
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+import { mapGetters } from 'vuex';
+import axios from '../../services/axios';
+import * as types from '../../store/types/user';
+import SectionTitle from '../../components/ui/SectionTitle.vue';
+
+const moment = extendMoment(Moment);
+
 export default {
-  data() {
-    return {
-      reservations: [],
-    };
+  data: () => ({
+    selected: 0,
+    reservations: Array(4).fill([]),
+    openAlert: false,
+    selectedReservation: '',
+  }),
+  components: {
+    'app-section-title': SectionTitle,
+  },
+  computed: {
+    ...mapGetters({
+      user: types.GET_USER,
+    }),
+  },
+  methods: {
+    formattedDate(date) {
+      return moment.duration(moment(date).diff()).humanize(true);
+    },
+    redirectToBooking() {
+      this.$router.push('/booking');
+    },
+    onDeletion() {
+      this.openAlert = false;
+      this.selectedReservation = '';
+      axios.delete(`/reservations/${this.selectedReservation}`)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((err) => {console.log(err)})
+    },
   },
   created() {
-    // Fetch reservations
+    // Fetch reservations of user for current date+
+    axios.get(`/reservations?filters={"user":"${this.user.id}", "from": { "$gte": "${moment.utc().format()}"}}`)
+      .then((response) => {
+        // Check if request succeed
+        if (!response.data.success) return;
+
+        // Set some dates
+        const day = moment().startOf('day');
+        const dayEnd = moment().endOf('day');
+        const weekEnd = moment().endOf('week');
+        const monthEnd = moment().endOf('month');
+        const yearEnd = moment().endOf('year');
+
+        // Set some ranges
+        const dayRange = moment().range(day, dayEnd);
+        const weekRange = moment().range(day, weekEnd);
+        const monthRange = moment().range(day, monthEnd);
+        const yearRange = moment().range(day, yearEnd);
+
+        // Set some containers
+        const reservationsOfDay = [];
+        const reservationsOfWeek = [];
+        const reservationsOfMonth = [];
+        const reservationsOfYear = [];
+
+        // Filter on payload
+        this.reservations = response.data.payload.sort((a, b) => moment(a.from).diff(b.from));
+        this.reservations.forEach((el) => {
+          if (dayRange.contains(moment(el.from))) reservationsOfDay.push(el);
+          if (weekRange.contains(moment(el.from))) reservationsOfWeek.push(el);
+          if (monthRange.contains(moment(el.from))) reservationsOfMonth.push(el);
+          if (yearRange.contains(moment(el.from))) reservationsOfYear.push(el);
+        });
+
+        this.reservations = [
+          reservationsOfDay,
+          reservationsOfWeek,
+          reservationsOfMonth,
+          reservationsOfYear,
+        ];
+      })
+      .catch(() => {});
   },
 };
 </script>
+
+<style lang="scss">
+#reservations {
+  width: 100vw;
+  min-height: 100vh;
+  min-height: calc(100vh - 80px);
+  margin: 0;
+  padding: 0;
+
+  & .reservations-wrapper {
+
+    margin: 5vh auto;
+
+    & .mu-tab-wrapper {
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      padding: 20px;
+    }
+
+    & .mu-tab-link-highlight {
+      height: 4px;
+    }
+    & .reservations-list, & .reservations-sublist {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      margin-top: 15px;
+      & .reservation-no-slot {
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        & p {
+          letter-spacing: 1px;
+          color: #333;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 16px;
+        }
+        & button {
+          margin-top: 50px;
+          font-family: 'Oswald', sans-serif;
+        }
+      }
+      & .reservation-slot {
+        letter-spacing: 1px;
+        color: #333;
+        padding: 15px 20px;
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        display: flex;
+
+        & .reservation-slot-content {
+          flex: 10;
+        }
+        & .reservation-slot-icon {
+          flex: 1;
+          font-size: 20px;
+          color: #DB4437;
+          opacity: .7;
+          transition: .3s ease-in-out;
+          cursor: pointer;
+          &:hover {
+            opacity: 1;
+            transition: .3s ease-in-out;
+          }
+
+        }
+      }
+    }
+  }
+}
+</style>
+
+<style>
+.alertAction {
+  font-family: 'Oswald',sans-serif;
+}
+</style>

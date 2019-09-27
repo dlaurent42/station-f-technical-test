@@ -29,6 +29,7 @@ export default {
 
   width: 100vw;
   min-height: 100vh;
+  min-height: calc(100vh - 80px);
   margin: 0;
   padding: 0;
 
