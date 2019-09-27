@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { uniqBy, get, find, omit } from 'lodash';
+import { uniqBy, get, find, omit, flatten } from 'lodash';
 
 // Import data from json input
 import data from '../assets/rooms.json';
@@ -46,7 +46,7 @@ const feed = () => (
   new Promise((resolve, reject) => {
 
     // Retrieve equipments from data
-    const equipments = uniqBy(data.rooms.map(el => el.equipements).flat(), 'name');
+    const equipments = uniqBy(flatten(data.rooms.map(el => el.equipements)), 'name');
 
     // Connect to database
     mongoose.connect(DATABASE.PATH, DATABASE.OPTIONS).catch(() => {});
