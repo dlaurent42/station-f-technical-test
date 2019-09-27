@@ -19,14 +19,14 @@ const ROUTES = [
   { method: 'PUT', url: '/reservations', scope: STATUS.AUTHENTICATED },
   // rooms
   { method: 'DELETE', url: '/rooms', scope: STATUS.AUTHENTICATED },
-  { method: 'GET', url: '/rooms', scope: STATUS.AUTHENTICATED },
   { method: 'GET', url: '/rooms/slots', scope: STATUS.AUTHENTICATED },
+  { method: 'GET', url: '/rooms', scope: STATUS.AUTHENTICATED },
   { method: 'POST', url: '/rooms', scope: STATUS.ADMIN },
   { method: 'PUT', url: '/rooms', scope: STATUS.ADMIN },
   // users
-  { method: 'GET', url: '/users', scope: STATUS.AUTHENTICATED },
   { method: 'GET', url: '/users/login', scope: STATUS.PUBLIC },
   { method: 'GET', url: '/users/', scope: STATUS.AUTHENTICATED },
+  { method: 'GET', url: '/users', scope: STATUS.AUTHENTICATED },
   { method: 'POST', url: '/users', scope: STATUS.ADMIN },
 ];
 
