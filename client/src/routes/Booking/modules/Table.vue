@@ -78,6 +78,15 @@ export default {
     dialogRoomDate: {},
     loading: false,
     rooms: [],
+    images: [
+      'https://images.pexels.com/photos/260689/pexels-photo-260689.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      'https://images.pexels.com/photos/416320/pexels-photo-416320.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      'https://images.pexels.com/photos/159213/hall-congress-architecture-building-159213.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      'https://images.pexels.com/photos/221537/pexels-photo-221537.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      'https://images.pexels.com/photos/1282315/pexels-photo-1282315.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      'https://images.pexels.com/photos/210620/pexels-photo-210620.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      'https://images.pexels.com/photos/159805/meeting-modern-room-conference-159805.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    ],
     sort: {
       name: '',
       order: 'asc',
@@ -123,7 +132,7 @@ export default {
     eventBus.$on('changeLoading', (value) => { this.loading = value; });
     eventBus.$on('changeRooms', (rooms) => {
       this.rooms = rooms.map(room => Object.assign(room, {
-        image: require(`../../../assets/room-miniature-0${Math.floor(Math.random() * 3 ) + 1}.jpg`), // eslint-disable-line
+        image: this.images[Math.floor(Math.random() * this.images.length)],
       }));
     });
   },
