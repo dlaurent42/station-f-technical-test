@@ -58,6 +58,7 @@ export default {
   },
   methods: {
     onLogout() {
+      this.show = false;
       this.$store.dispatch(types.ACTION_LOGOUT);
     },
   },
@@ -71,12 +72,13 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: -webkit-fill-available;
-  padding: 10px 25px 10px 15px;
+  padding-left: 25px;
+  padding-right: 15px;
   z-index: 9999;
-
+  background-color: white;
   -webkit-user-select: none;
   user-select: none;
-
+  box-shadow: 1px 1px 5px rgb(50,50,50);
   & .menu-logo {
     display: flex;
     flex-direction: row;
@@ -163,6 +165,7 @@ export default {
   width: 100vw;
   background: white;
   color: grey;
+  z-index: 1000;
 
   & .menu-items {
     position: fixed;

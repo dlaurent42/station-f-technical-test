@@ -2,7 +2,6 @@
   <div id="app">
     <app-header />
     <router-view/>
-    <app-footer />
   </div>
 </template>
 
@@ -10,13 +9,11 @@
 import { mapGetters } from 'vuex';
 import * as types from './store/types/user';
 import Header from './components/navigation/Header.vue';
-import Footer from './components/navigation/Footer.vue';
 
 export default {
   name: 'app',
   components: {
     'app-header': Header,
-    'app-footer': Footer,
   },
   computed: {
     ...mapGetters({
@@ -36,7 +33,10 @@ html {
   scroll-behavior: smooth;
   height: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 </style>

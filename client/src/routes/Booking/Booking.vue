@@ -1,19 +1,40 @@
 <template>
   <div id="booking">
-    <h1>That's the booking module!</h1>
-    <p>You should only get here if you're authenticated!</p>
+    <app-section-title
+      primary="BOOK A MEETING ROOM"
+      secondary="Instantly and easily book unique meeting rooms and spaces."
+    />
+    <app-booking-form />
+    <hr>
+    <app-booking-table />
   </div>
 </template>
 
 <script>
+import Form from './modules/Form.vue';
+import Table from './modules/Table.vue';
+import SectionTitle from '../../components/ui/SectionTitle.vue';
+
 export default {
-  data() {
-    return {
-      rooms: [],
-    };
-  },
-  created() {
-    // Fetch /rooms/slots
+  components: {
+    'app-booking-form': Form,
+    'app-booking-table': Table,
+    'app-section-title': SectionTitle,
   },
 };
 </script>
+
+<style lang="scss" scoped>
+#booking {
+
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  & hr {
+    width: 60vw;
+    margin: 5vh auto;
+  }
+}
+</style>
