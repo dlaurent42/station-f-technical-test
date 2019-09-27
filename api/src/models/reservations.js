@@ -55,7 +55,8 @@ ReservationsSchema.pre('save', function (next) {
 });
 
 ReservationsSchema.statics.verifyFrom = value => (
-  moment().add(10, 'minutes').diff(moment(value)) < 0
+  moment.utc(value)._isValid
+  && moment().add(10, 'minutes').diff(moment(value)) < 0
 );
 
 ReservationsSchema.statics.verifyDuration = value => (

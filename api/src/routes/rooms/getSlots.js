@@ -14,6 +14,9 @@ export default express.Router().get('/slots', (req, res) => {
   // Declare a variable to store rooms
   let rooms = [];
 
+  // Check date
+  if (!moment.utc(date)._isValid) return res.status(422).json({ success: false, message: 'Invalid date' });
+
   // Fetch rooms
   return fetchAll(Rooms)
     .then(documents => populate(Rooms, documents, { path: 'equipments' }))
