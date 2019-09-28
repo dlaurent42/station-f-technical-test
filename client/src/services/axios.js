@@ -22,11 +22,10 @@ instance.interceptors.response.use(
   (error) => {
     const originalRequest = error.config;
 
-
     // Check if response status is 401 and if original request was the one for refreshing token
     if (!error.response || (
       error.response.status === 401 && originalRequest.url === `${process.env.VUE_APP_API_URI}/auth/refresh`)) {
-      router.replace('/login');
+      if (router.currentRoute.path !== '/login') router.replace('/login');
       return Promise.reject(error);
     }
 
@@ -42,7 +41,7 @@ instance.interceptors.response.use(
             axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
             return axios(originalRequest);
           }
-          router.replace('/login');
+          if (router.currentRoute.path !== '/login') router.replace('/login');
           return Promise.reject(error);
         });
     }
