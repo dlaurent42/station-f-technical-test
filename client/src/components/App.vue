@@ -2,6 +2,14 @@
   <div id="app">
     <app-header />
     <router-view />
+    <mu-snackbar
+      class="alert-popup"
+      :color="alert.type"
+      position="bottom-end"
+      :open.sync="alert.show"
+    >
+      {{ alert.text }}
+    </mu-snackbar>
   </div>
 </template>
 
@@ -9,9 +17,17 @@
 import { mapGetters } from 'vuex';
 import * as types from '@/store/types/user';
 import Header from './navigation/Header.vue';
+import eventBus from '@/eventBuses/notifications';
 
 export default {
   name: 'app',
+  data: () => ({
+    alert: {
+      show: false,
+      type: '',
+      text: '',
+    },
+  }),
   components: {
     'app-header': Header,
   },
@@ -19,6 +35,18 @@ export default {
     ...mapGetters({
       user: types.GET_USER,
     }),
+  },
+  created() {
+    // Add event listener
+    eventBus.$on('pushNotification', (data) => {
+      this.alert = {
+        ...data,
+        show: true,
+      };
+      setTimeout(() => {
+        this.alert.show = false;
+      }, 5 * 1000);
+    });
   },
 };
 </script>
@@ -52,6 +80,4 @@ button, div.mu-form-item-label, div.mu-checkbox-label {
 .mu-card {
   font-family: 'Montserrat', sans-serif;
 }
-
-
 </style>

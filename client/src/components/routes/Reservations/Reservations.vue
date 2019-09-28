@@ -92,6 +92,7 @@ import { extendMoment } from 'moment-range';
 import { mapGetters } from 'vuex';
 import axios from '@/services/axios';
 import * as types from '@/store/types/user';
+import eventBus from '@/eventBuses/notifications';
 
 const moment = extendMoment(Moment);
 
@@ -125,9 +126,10 @@ export default {
           // Remove reservation from list in case of success
           if (response.data.success) {
             this.reservations = this.reservations.map(a => (a.filter(b => b._id !== this.selectedReservation))); // eslint-disable-line
+            eventBus.pushNotification('success', 'Reservation has been cancelled.');
           }
         })
-        .catch(() => {});
+        .catch(error => eventBus.pushNotification('error', error.message));
     },
   },
   created() {
@@ -173,7 +175,7 @@ export default {
           reservationsOfYear,
         ];
       })
-      .catch(() => {});
+      .catch(error => eventBus.pushNotification('error', error.message));
   },
 };
 </script>

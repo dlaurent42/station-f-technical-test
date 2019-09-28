@@ -69,6 +69,7 @@ import { mapGetters } from 'vuex';
 import axios from '@/services/axios';
 import * as types from '@/store/types/user';
 import Stat from './modules/Stat.vue';
+import eventBus from '@/eventBuses/notifications';
 
 const moment = extendMoment(Moment);
 
@@ -144,7 +145,7 @@ export default {
           .sort((a, b) => b.numberOfReservations - a.numberOfReservations)
           .slice(0, 3);
       })
-      .catch(() => {});
+      .catch(error => eventBus.pushNotification('error', error.message));
   },
 };
 </script>
