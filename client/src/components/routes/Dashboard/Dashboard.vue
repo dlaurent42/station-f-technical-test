@@ -50,7 +50,7 @@
 
       <!-- best day to book a room -->
       <h3 class="dashboard-subtitle">Your best day to book a room</h3>
-      <div v-if="favoriteDayToBookRooms.day" class="day-to-book">
+      <div v-if="favoriteDayToBookRooms && favoriteDayToBookRooms.day" class="day-to-book">
         {{ favoriteDayToBookRooms.day }}
         is definitly the best day with
         {{ favoriteDayToBookRooms.numberOfReservations }}
@@ -116,7 +116,7 @@ export default {
         )
           .map(entry => ({ day: entry[0], numberOfReservations: entry[1] }))
           .sort((a, b) => b.numberOfReservations - a.numberOfReservations)
-          .slice(1)
+          .slice(0, 1)
           .map(el => ({
             ...el,
             day: moment().weekday(el.day).format('dddd'),
