@@ -15,6 +15,7 @@
           class="menu-item"
           to="/"
           tag="div"
+          exact
         >
           Dashboard
         </router-link>
@@ -165,7 +166,7 @@ export default {
   height: 100vh;
   width: 100vw;
   background: white;
-  color: grey;
+  color: rgb(40, 44, 52);
   z-index: 1000;
 
   & .menu-items {
@@ -190,7 +191,6 @@ export default {
       background: rgba(40, 44, 52, 0.5);
     }
     & .menu-item {
-      font: 14px Arial;
       letter-spacing: 2px;
       padding: 5px 10px;
       margin: 0 5px;
@@ -198,11 +198,24 @@ export default {
       opacity: .85;
       transition: .5s;
       padding: 15px 10px;
-      &.active { opacity: 1; transition: .5s; }
+      font-family: 'Oswald';
+      font-size: 20px;
+      text-transform: uppercase;
       &:link, &:visited, &:active {
         text-decoration: none;
         color: inherit;
         transition: .5s;
+      }
+      &:hover {
+        opacity: 1;
+        letter-spacing: 4px;
+      }
+      &.router-link-active {
+        opacity: 0.2;
+        &:hover {
+          opacity: 0.2;
+          letter-spacing: 2px;
+        }
       }
     }
   }

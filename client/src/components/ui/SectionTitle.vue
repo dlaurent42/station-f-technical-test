@@ -1,5 +1,5 @@
 <template>
-  <div class="section-title">
+  <div class="section-title" :style="{ backgroundImage: getBackgroundUrl() }">
     <h1 class="section-title-primary">{{ primary }}</h1>
     <h2 class="section-title-secondary">{{ secondary }}</h2>
   </div>
@@ -7,9 +7,28 @@
 
 <script>
 export default {
+  data: () => ({
+    images: [
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-314-1568044665.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-315-1568044665.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-316-1568044665.jpg',
+      'https://www.vevs.com/images/meeting-room-booking-website-builder-demo.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-274-1568044665.jpg',
+    ],
+  }),
   props: {
     primary: String,
     secondary: String,
+  },
+  methods: {
+    getBackgroundUrl() {
+      // This method return a random image based on 'images' array
+      // 4th image already has an overlay so no overlay is added for it
+      const index = Math.floor(Math.random() * this.images.length);
+      return (index === 3)
+        ? `url(${this.images[Math.floor(Math.random() * this.images.length)]})`
+        : `linear-gradient(0deg,rgba(24,25,24,0.8),rgba(24,25,24,0.8)), url(${this.images[Math.floor(Math.random() * this.images.length)]})`;
+    },
   },
 };
 </script>
@@ -20,14 +39,12 @@ export default {
   left: 0;
   width: 100vw;
   height: 600px;
-  background-image:url('../../assets/section-title-background.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   padding: 150px 0 110px;
   overflow: hidden;
   color: white;
-  font-family: Rubik, Arial, sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: center;

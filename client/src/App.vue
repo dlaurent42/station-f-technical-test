@@ -28,7 +28,7 @@ html {
   box-sizing: border-box;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   color: #2c3e50;
   scroll-behavior: smooth;
   height: 100%;
@@ -38,9 +38,20 @@ html {
 
 h1, h2, h3, h4, h5, h6 {
   text-align: center;
+  font-family: 'Oswald', sans-serif;
 }
 
 #app {
   padding-bottom: 80px;
 }
+
+button, div.mu-form-item-label, div.mu-checkbox-label {
+  font-family: 'Oswald', sans-serif;
+}
+
+.mu-card {
+  font-family: 'Montserrat', sans-serif;
+}
+
+
 </style>

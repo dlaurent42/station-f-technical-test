@@ -142,8 +142,8 @@ export default {
 <style lang="scss" scoped>
 .booking-grid {
   background: transparent;
-  width: 80vw;
-  padding: 5vh 10vw;
+  width: 90vw;
+  padding: 5vh 5vw;
   margin: auto !important;
   justify-content: center;
   & h3 {
@@ -155,6 +155,10 @@ export default {
     width: 100%;
     max-width: 375px;
     margin: 30px 15px;
+    & .mu-card-media {
+      height: 200px;
+      overflow: hidden;
+    }
     & .card-actions {
       display: flex;
       flex-direction: row;
@@ -174,8 +178,8 @@ export default {
 
 <style lang="scss">
 .mu-dialog {
-  width: 50vw;
-  height: 50vh;
+  max-width: 500px;
+  max-height: 50vh;
   overflow-y: auto;
   & .mu-dialog-body {
     padding: 0;

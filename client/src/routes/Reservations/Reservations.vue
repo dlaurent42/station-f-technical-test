@@ -4,7 +4,6 @@
       primary="RESERVATIONS"
       secondary="You just arrived and wan't to check if you have time for a coffee?"
     />
-    {{ selected }}
     <mu-container class="reservations-wrapper">
       <mu-tabs :value.sync="selected" color="rgb(44,44,44)" indicator-color="green" full-width>
         <mu-tab>TODAY</mu-tab>
@@ -43,10 +42,30 @@
         </div>
       </div>
     </mu-container>
-    <mu-dialog title="Confirm deletion" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
+    <mu-dialog
+      title="Confirm deletion"
+      width="400px"
+      :esc-press-close="false"
+      :overlay-close="false"
+      :open.sync="openAlert"
+    >
       Do you confirm deletion of this reservation ?
-      <mu-button class="alertAction" slot="actions" flat @click="openAlert = false">Cancel</mu-button>
-      <mu-button class="alertAction" slot="actions" color="#222" @click="onDeletion">Confirm</mu-button>
+      <mu-button
+        class="alert-action"
+        slot="actions"
+        flat
+        @click="openAlert = false"
+      >
+        Cancel
+      </mu-button>
+      <mu-button
+        class="alert-action"
+        slot="actions"
+        color="#222"
+        @click="onDeletion"
+      >
+        Confirm
+      </mu-button>
     </mu-dialog>
   </div>
 </template>
@@ -84,13 +103,18 @@ export default {
       this.$router.push('/booking');
     },
     onDeletion() {
+      // Close dialog box and reset deletion
       this.openAlert = false;
-      this.selectedReservation = '';
+
+      // Send delete request to api
       axios.delete(`/reservations/${this.selectedReservation}`)
         .then((response) => {
-          console.log(response.data);
+          // Remove reservation from list in case of success
+          if (response.data.success) {
+            this.reservations = this.reservations.map(a => (a.filter(b => b._id !== this.selectedReservation))); // eslint-disable-line
+          }
         })
-        .catch((err) => {console.log(err)})
+        .catch((err) => { console.log(err); });
     },
   },
   created() {
@@ -128,6 +152,7 @@ export default {
           if (yearRange.contains(moment(el.from))) reservationsOfYear.push(el);
         });
 
+        // Transform reservations into array of arrays containing data
         this.reservations = [
           reservationsOfDay,
           reservationsOfWeek,
@@ -151,6 +176,7 @@ export default {
   & .reservations-wrapper {
 
     margin: 5vh auto;
+    min-height: 300px;
 
     & .mu-tab-wrapper {
       font-family: 'Oswald', sans-serif;
@@ -214,8 +240,10 @@ export default {
 }
 </style>
 
-<style>
-.alertAction {
-  font-family: 'Oswald',sans-serif;
+<style lang="scss">
+.alert-dialog {
+  & .mu-dialog-body {
+    padding: 24px 24px 20px;
+  }
 }
 </style>
