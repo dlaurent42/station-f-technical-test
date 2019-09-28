@@ -72,7 +72,15 @@ export default {
     },
   },
   mounted() {
-    this.backgroundImage = `linear-gradient(0deg,rgba(24,25,24,0.94),rgba(24,25,24,0.94)), url(${this.images[Math.floor(Math.random() * this.images.length)]})`;
+    const images = [
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-314-1568044665.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-315-1568044665.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-316-1568044665.jpg',
+      'https://www.vevs.com/images/meeting-room-booking-website-builder-demo.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-274-1568044665.jpg',
+    ];
+    const index = Math.floor(Math.random() * images.length);
+    this.backgroundImage = `linear-gradient(0deg,rgba(24,25,24,0.94),rgba(24,25,24,0.94)), url(${images[index]})`;
   },
 };
 </script>

@@ -7,15 +7,6 @@
 
 <script>
 export default {
-  data: () => ({
-    images: [
-      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-314-1568044665.jpg',
-      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-315-1568044665.jpg',
-      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-316-1568044665.jpg',
-      'https://www.vevs.com/images/meeting-room-booking-website-builder-demo.jpg',
-      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-274-1568044665.jpg',
-    ],
-  }),
   props: {
     primary: String,
     secondary: String,
@@ -24,10 +15,17 @@ export default {
     getBackgroundUrl() {
       // This method return a random image based on 'images' array
       // 4th image already has an overlay so no overlay is added for it
-      const index = Math.floor(Math.random() * this.images.length);
+      const images = [
+        'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-314-1568044665.jpg',
+        'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-315-1568044665.jpg',
+        'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-316-1568044665.jpg',
+        'https://www.vevs.com/images/meeting-room-booking-website-builder-demo.jpg',
+        'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-274-1568044665.jpg',
+      ];
+      const index = Math.floor(Math.random() * images.length);
       return (index === 3)
-        ? `url(${this.images[Math.floor(Math.random() * this.images.length)]})`
-        : `linear-gradient(0deg,rgba(24,25,24,0.8),rgba(24,25,24,0.8)), url(${this.images[Math.floor(Math.random() * this.images.length)]})`;
+        ? `url(${images[index]})`
+        : `linear-gradient(0deg,rgba(24,25,24,0.8),rgba(24,25,24,0.8)), url(${images[index]})`;
     },
   },
 };
