@@ -12,8 +12,8 @@ const app = express();
 app.use(express.json());
 
 // Cors is used to allow only URLs from a white list
-// app.use(cors(CORS));
-app.use(cors());
+app.use(cors(CORS));
+// app.use(cors()); // UNCOMMENT TO USE POSTMAN
 
 // Setup routes
 setRouter(app);
