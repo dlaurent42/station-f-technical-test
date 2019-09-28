@@ -1,16 +1,24 @@
 <template>
-  <mu-container id="login">
+  <mu-container id="login" :style="{ backgroundImage }">
     <mu-form ref="form" :model="form" class="login-form">
       <h1>LOGIN</h1>
+
+      <!-- username -->
       <mu-form-item label="username or email" prop="username" :rules="usernameRules">
         <mu-text-field v-model="form.username" prop="username" />
       </mu-form-item>
+
+      <!-- password -->
       <mu-form-item label="password" prop="password" :rules="passwordRules">
         <mu-text-field type="password" v-model="form.password" prop="password" />
       </mu-form-item>
+
+      <!-- submit -->
       <mu-form-item>
         <mu-button color="rgb(24, 45, 67)" @click="onSubmit">SUBMIT</mu-button>
       </mu-form-item>
+
+      <!-- form error handler -->
       <div class="submit-error" v-if="submitError !== null">{{ submitError }}</div>
     </mu-form>
   </mu-container>
@@ -18,9 +26,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import * as types from '../../store/types/user';
+import * as types from '@/store/types/user';
 
 export default {
+  title: 'Station F | Login',
   data: () => ({
     usernameRules: [
       { validate: val => !!val, message: 'Username must be filled in' },
@@ -32,6 +41,14 @@ export default {
       username: '',
       password: '',
     },
+    images: [
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-314-1568044665.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-315-1568044665.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-316-1568044665.jpg',
+      'https://www.vevs.com/images/meeting-room-booking-website-builder-demo.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-274-1568044665.jpg',
+    ],
+    backgroundImage: '',
   }),
   computed: {
     ...mapGetters({
@@ -54,6 +71,17 @@ export default {
         });
     },
   },
+  mounted() {
+    const images = [
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-314-1568044665.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-315-1568044665.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-316-1568044665.jpg',
+      'https://www.vevs.com/images/meeting-room-booking-website-builder-demo.jpg',
+      'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-274-1568044665.jpg',
+    ];
+    const index = Math.floor(Math.random() * images.length);
+    this.backgroundImage = `linear-gradient(0deg,rgba(24,25,24,0.94),rgba(24,25,24,0.94)), url(${images[index]})`;
+  },
 };
 </script>
 
@@ -68,6 +96,10 @@ export default {
   min-width: 100vw;
   min-height: 100vh;
   background-color: #181818;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 0;
 
   & .login-form {
     width: 400px;

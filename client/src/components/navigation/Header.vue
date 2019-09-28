@@ -1,5 +1,5 @@
 <template>
-  <div class="menu" v-if="isAuthenticated">
+  <div class="menu" v-if="isAuthenticated" :class="{ opened: show, closed: !show }">
     <router-link id="menu-logo" to="/" exact>
       <img src="@/assets/logo.png" alt="logo" class="logo"/>
     </router-link>
@@ -8,43 +8,46 @@
       <span class="menu-burger-bar" :class="{ opened: show, closed: !show }"/>
       <span class="menu-burger-bar" :class="{ opened: show, closed: !show }"/>
     </div>
-    <div v-if="show" class="menu-container">
-      <div class="menu-items">
-        <router-link
-          @click.native="show = !show"
-          class="menu-item"
-          to="/"
-          tag="div"
-        >
-          Dashboard
-        </router-link>
-        <router-link
-          @click.native="show = !show"
-          class="menu-item"
-          to="/reservations"
-          tag="div"
-        >
-          Reservations
-        </router-link>
-        <router-link
-          @click.native="show = !show"
-          class="menu-item"
-          to="/booking"
-          tag="div"
-        >
-          Book a room
-        </router-link>
-        <div @click="onLogout" class="menu-item">
-          Logout
+    <app-transition-fade>
+      <div v-if="show" class="menu-container">
+        <div class="menu-items">
+          <router-link
+            @click.native="show = !show"
+            class="menu-item"
+            to="/"
+            tag="div"
+            exact
+          >
+            Dashboard
+          </router-link>
+          <router-link
+            @click.native="show = !show"
+            class="menu-item"
+            to="/reservations"
+            tag="div"
+          >
+            Reservations
+          </router-link>
+          <router-link
+            @click.native="show = !show"
+            class="menu-item"
+            to="/booking"
+            tag="div"
+          >
+            Book a room
+          </router-link>
+          <div @click="onLogout" class="menu-item">
+            Logout
+          </div>
         </div>
       </div>
-    </div>
+    </app-transition-fade>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import * as types from '../../store/types/user';
+import * as types from '@/store/types/user';
 
 export default {
   data: () => ({
@@ -71,7 +74,8 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: -webkit-fill-available;
+  width: 100vw;
+  height: 80px;
   padding-left: 25px;
   padding-right: 15px;
   z-index: 9999;
@@ -79,6 +83,12 @@ export default {
   -webkit-user-select: none;
   user-select: none;
   box-shadow: 1px 1px 5px rgb(50,50,50);
+  &.opened {
+    position: fixed;
+  }
+  &.closed {
+    position: absolute;
+  }
   & .menu-logo {
     display: flex;
     flex-direction: row;
@@ -102,7 +112,7 @@ export default {
       display: block;
       width: 40px;
       height: 32px;
-      position: absolute;
+      position: fixed;
       top: -7px;
       left: -5px;
 
@@ -164,7 +174,7 @@ export default {
   height: 100vh;
   width: 100vw;
   background: white;
-  color: grey;
+  color: rgb(40, 44, 52);
   z-index: 1000;
 
   & .menu-items {
@@ -189,7 +199,6 @@ export default {
       background: rgba(40, 44, 52, 0.5);
     }
     & .menu-item {
-      font: 14px Arial;
       letter-spacing: 2px;
       padding: 5px 10px;
       margin: 0 5px;
@@ -197,13 +206,33 @@ export default {
       opacity: .85;
       transition: .5s;
       padding: 15px 10px;
-      &.active { opacity: 1; transition: .5s; }
+      font-family: 'Oswald';
+      font-size: 20px;
+      text-transform: uppercase;
       &:link, &:visited, &:active {
         text-decoration: none;
         color: inherit;
         transition: .5s;
       }
+      &:hover {
+        opacity: 1;
+        letter-spacing: 4px;
+      }
+      &.router-link-active {
+        opacity: 0.2;
+        &:hover {
+          opacity: 0.2;
+          letter-spacing: 2px;
+        }
+      }
     }
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

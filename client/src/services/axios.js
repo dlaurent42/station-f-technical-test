@@ -1,5 +1,5 @@
 import axios from 'axios';
-import router from '../routes';
+import router from '@/components/routes';
 
 // Create an instance of axios and configure base URL
 const instance = axios.create({ baseURL: process.env.VUE_APP_API_URI });
