@@ -1,5 +1,5 @@
 <template>
-  <mu-container id="login" :style="{ backgroundImage: getBackgroundUrl() }">
+  <mu-container id="login" :style="{ backgroundImage }">
     <mu-form ref="form" :model="form" class="login-form">
       <h1>LOGIN</h1>
 
@@ -29,6 +29,7 @@ import { mapGetters } from 'vuex';
 import * as types from '../../store/types/user';
 
 export default {
+  title: 'Station F | Login',
   data: () => ({
     usernameRules: [
       { validate: val => !!val, message: 'Username must be filled in' },
@@ -47,6 +48,7 @@ export default {
       'https://www.vevs.com/images/meeting-room-booking-website-builder-demo.jpg',
       'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-274-1568044665.jpg',
     ],
+    backgroundImage: '',
   }),
   computed: {
     ...mapGetters({
@@ -54,9 +56,6 @@ export default {
     }),
   },
   methods: {
-    getBackgroundUrl() {
-      return `linear-gradient(0deg,rgba(24,25,24,0.94),rgba(24,25,24,0.94)), url(${this.images[Math.floor(Math.random() * this.images.length)]})`;
-    },
     onSubmit() {
       this.$refs.form.validate()
         .then((isValid) => {
@@ -71,6 +70,9 @@ export default {
           });
         });
     },
+  },
+  mounted() {
+    this.backgroundImage = `linear-gradient(0deg,rgba(24,25,24,0.94),rgba(24,25,24,0.94)), url(${this.images[Math.floor(Math.random() * this.images.length)]})`;
   },
 };
 </script>

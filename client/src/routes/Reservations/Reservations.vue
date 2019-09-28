@@ -22,13 +22,13 @@
           <div v-if="!reservations[selected]" />
 
           <!-- onEmpty: redirect to booking -->
-          <div v-else-if="reservations[selected].length === 0">
+          <div v-else-if="reservations[selected].length === 0" class="reservation-no-slot">
             <p>No reservations for now</p>
             <mu-button @click="redirectToBooking">Book a meeting room</mu-button>
           </div>
 
           <!-- onData: display list of upcoming reservations -->
-          <div v-else class="reservation-no-slot">
+          <div v-else>
             <div v-for="(reservation, idx) in reservations[selected]" :key="reservation._id">
               <div class="reservation-slot-wrapper">
                 <div class="reservation-slot">
@@ -97,6 +97,7 @@ import SectionTitle from '../../components/ui/SectionTitle.vue';
 const moment = extendMoment(Moment);
 
 export default {
+  title: 'Station F | Your reservations',
   data: () => ({
     selected: 0,
     reservations: Array(4).fill([]),

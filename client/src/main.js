@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import App from './App.vue';
 import router from './routes';
 import store from './store';
+import titleMixin from './mixins/documentTitle';
 
 Vue.config.productionTip = false;
 
@@ -15,6 +16,7 @@ library.add(faTrashAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(MuseUI);
+Vue.mixin(titleMixin);
 
 new Vue({
   router,

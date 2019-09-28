@@ -16,6 +16,7 @@ import Table from './modules/Table.vue';
 import SectionTitle from '../../components/ui/SectionTitle.vue';
 
 export default {
+  title: 'Station F | Book a meeting room',
   components: {
     'app-booking-form': Form,
     'app-booking-table': Table,
