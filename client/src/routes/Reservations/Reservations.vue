@@ -5,19 +5,35 @@
       secondary="You just arrived and wan't to check if you have time for a coffee?"
     />
     <mu-container class="reservations-wrapper">
+
+      <!-- navigation tabs -->
       <mu-tabs :value.sync="selected" color="rgb(44,44,44)" indicator-color="green" full-width>
         <mu-tab>TODAY</mu-tab>
         <mu-tab>WEEK</mu-tab>
         <mu-tab>MONTH</mu-tab>
         <mu-tab>YEAR</mu-tab>
       </mu-tabs>
+
+      <!-- reservations list -->
       <div class="reservations-list">
         <div class="reservations-sublist">
-          <div v-if="!reservations[selected]"></div>
-          <div v-else-if="reservations[selected].length">
+
+          <!-- onError: empty div -->
+          <div v-if="!reservations[selected]" />
+
+          <!-- onEmpty: redirect to booking -->
+          <div v-else-if="reservations[selected].length === 0">
+            <p>No reservations for now</p>
+            <mu-button @click="redirectToBooking">Book a meeting room</mu-button>
+          </div>
+
+          <!-- onData: display list of upcoming reservations -->
+          <div v-else class="reservation-no-slot">
             <div v-for="(reservation, idx) in reservations[selected]" :key="reservation._id">
               <div class="reservation-slot-wrapper">
                 <div class="reservation-slot">
+
+                  <!-- reservation text -->
                   <div class="reservation-slot-content">
                     <strong>{{ reservation.room.name }}</strong>
                     {{ formattedDate(reservation.from) }}
@@ -25,6 +41,8 @@
                     {{ reservation.duration }}
                     minutes
                   </div>
+
+                  <!-- reservation deletion icon -->
                   <font-awesome-icon
                     @click="openAlert = true; selectedReservation = reservation._id"
                     class="reservation-slot-icon"
@@ -35,13 +53,11 @@
               </div>
             </div>
           </div>
-          <div v-else class="reservation-no-slot">
-            <p>No reservations for now</p>
-            <mu-button @click="redirectToBooking">Book a meeting room</mu-button>
-          </div>
         </div>
       </div>
     </mu-container>
+
+    <!-- reservation confirmation dialog box -->
     <mu-dialog
       title="Confirm deletion"
       width="400px"
@@ -114,7 +130,7 @@ export default {
             this.reservations = this.reservations.map(a => (a.filter(b => b._id !== this.selectedReservation))); // eslint-disable-line
           }
         })
-        .catch((err) => { console.log(err); });
+        .catch(() => {});
     },
   },
   created() {

@@ -2,15 +2,23 @@
   <mu-container id="login" :style="{ backgroundImage: getBackgroundUrl() }">
     <mu-form ref="form" :model="form" class="login-form">
       <h1>LOGIN</h1>
+
+      <!-- username -->
       <mu-form-item label="username or email" prop="username" :rules="usernameRules">
         <mu-text-field v-model="form.username" prop="username" />
       </mu-form-item>
+
+      <!-- password -->
       <mu-form-item label="password" prop="password" :rules="passwordRules">
         <mu-text-field type="password" v-model="form.password" prop="password" />
       </mu-form-item>
+
+      <!-- submit -->
       <mu-form-item>
         <mu-button color="rgb(24, 45, 67)" @click="onSubmit">SUBMIT</mu-button>
       </mu-form-item>
+
+      <!-- form error handler -->
       <div class="submit-error" v-if="submitError !== null">{{ submitError }}</div>
     </mu-form>
   </mu-container>

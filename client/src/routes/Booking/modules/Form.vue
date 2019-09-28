@@ -2,6 +2,8 @@
   <mu-form ref="form" :model="form" class="booking-form">
     <h3>Find the room that fit your needs</h3>
     <mu-flex wrap="wrap" justify-content="between" direction="row" align-items="center" fill>
+
+      <!-- select date -->
       <mu-form-item label="Date" prop="datetime" :rules="datetimeRules">
         <mu-date-input
           v-model="form.datetime"
@@ -10,6 +12,8 @@
           @change="onDateChange"
         />
       </mu-form-item>
+
+      <!-- select time -->
       <mu-form-item label="Time" prop="datetime" :rules="datetimeRules">
         <mu-date-input
           type="time"
@@ -18,6 +22,8 @@
           @change="onDateChange"
         />
       </mu-form-item>
+
+      <!-- select duration -->
       <mu-form-item label="Duration (in minutes)" prop="duration" :rules="durationRules">
         <mu-text-field
           type="number"
@@ -27,6 +33,8 @@
           @change="onDateChange"
         />
       </mu-form-item>
+
+      <!-- select number of attendees -->
       <mu-form-item label="Attendees" prop="capacity" :rules="capacityRules">
         <mu-text-field
           type="number"
@@ -38,6 +46,8 @@
       </mu-form-item>
     </mu-flex>
     <hr>
+
+    <!-- select mandatory equipments -->
     <mu-flex wrap="wrap" justify-content="start" direction="row" align-items="center" fill>
       <mu-form-item label="Equipments" prop="equipments">
         <mu-checkbox
@@ -113,18 +123,19 @@ export default {
             roomId,
             userId: this.user.id,
           };
-          console.log(data);
+
           // Send request
           axios.post('/reservations', data)
-            .then((res) => {
-              console.log(res.data);
-              this.onDateChange();
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+            .then(res => (
+              (res.data.success)
+                ? this.onDateChange()
+                : null
+            ))
+            .catch(() => {});
         });
     },
+
+    // Called in case of date / time / duration change
     onDateChange() {
       this.$refs.form.validate()
         .then((isValid) => {
@@ -154,11 +165,11 @@ export default {
               // Now filter on other static fields
               this.onOtherChanges();
             })
-            .catch(() => {
-              eventBus.setLoading(false);
-            });
+            .catch(() => eventBus.setLoading(false));
         });
     },
+
+    // Called in case of equipments / capacity change
     onOtherChanges() {
       eventBus.setLoading(true);
 
@@ -188,20 +199,22 @@ export default {
     // Fetch reservation slots
     axios.get('/rooms/slots')
       .then((response) => {
-        this.rooms = response.data.payload;
-        this.filteredRooms = this.rooms;
-        eventBus.setLoading(false);
-        eventBus.setRooms(this.rooms);
+        // Update rooms in case of success
+        if (response.data.success) {
+          this.rooms = response.data.payload;
+          this.filteredRooms = this.rooms;
+          eventBus.setLoading(false);
+          eventBus.setRooms(this.rooms);
+        }
 
         // Fetch equipments list
         return axios.get('/equipments');
       })
       .then((response) => {
-        this.equipmentsList = response.data.payload;
+        // Update equipments list in case of success
+        if (response.data.success) this.equipmentsList = response.data.payload;
       })
-      .catch(() => {
-        eventBus.setLoading(false);
-      });
+      .catch(() => eventBus.setLoading(false));
 
     // Add eventBus listeners
     eventBus.$on('submit', roomId => this.onSubmit(roomId));

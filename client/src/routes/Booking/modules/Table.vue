@@ -2,6 +2,8 @@
   <div>
     <h3>{{ rooms.length }} rooms available</h3>
     <div v-if="loading">Loading ...</div>
+
+    <!-- list of room cards -->
     <mu-grid-list v-else class="booking-grid">
       <mu-card class="card" v-for="room in rooms" :key="room._id">
         <mu-card-media>
@@ -17,6 +19,8 @@
         </mu-card-actions>
       </mu-card>
     </mu-grid-list>
+
+    <!-- details dialog box -->
     <mu-dialog :open.sync="dialogIsOpened">
       <div class="dialog-wrapper">
         <mu-card class="dialog-card">
@@ -24,14 +28,20 @@
             <img :src="dialogRoomDate.image">
           </mu-card-media>
           <mu-card-title :title="dialogRoomDate.name" />
+
+          <!-- room capacity -->
           <mu-sub-header>Capacity</mu-sub-header>
           <mu-card-text>
             This room can contains up to
             {{ dialogRoomDate.capacity }}
             attendees
           </mu-card-text>
+
+          <!-- room description -->
           <mu-sub-header>Description</mu-sub-header>
           <mu-card-text>{{ dialogRoomDate.description }}</mu-card-text>
+
+          <!-- equipments list -->
           <mu-sub-header>Equipments</mu-sub-header>
           <mu-card-text v-if="dialogRoomDate.equipments && dialogRoomDate.equipments.length">
             <ul>
@@ -40,7 +50,9 @@
               </li>
             </ul>
           </mu-card-text>
-          <mu-card-text v-else>No reservation for this day.</mu-card-text>
+          <mu-card-text v-else>No equipments in this room.</mu-card-text>
+
+          <!-- reservations list -->
           <mu-sub-header>Reservations</mu-sub-header>
           <mu-card-text v-if="dialogRoomDate.reservations && dialogRoomDate.reservations.length">
             <ul>
@@ -52,6 +64,8 @@
             </ul>
           </mu-card-text>
           <mu-card-text v-else>No reservation for this day.</mu-card-text>
+
+          <!-- actions -->
           <mu-card-actions class="card-actions">
             <mu-button flat @click="dialogIsOpened = false">Close</mu-button>
             <mu-button
@@ -87,37 +101,10 @@ export default {
       'https://images.pexels.com/photos/210620/pexels-photo-210620.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
       'https://images.pexels.com/photos/159805/meeting-modern-room-conference-159805.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
     ],
-    sort: {
-      name: '',
-      order: 'asc',
-    },
-    columns: [{
-      title: 'Capacity',
-      name: 'capacity',
-      sortable: true,
-      align: 'center',
-    }, {
-      title: 'Name',
-      name: 'name',
-      sortable: true,
-      align: 'center',
-    }, {
-      title: 'Description',
-      name: 'description',
-      align: 'center',
-    }],
   }),
   methods: {
     formattedFromTo(from, to) {
       return `from ${moment(from).format('HH:mm')} to ${moment(to).format('HH:mm')}`;
-    },
-    onSortChange({ name, order }) {
-      this.rooms = this.rooms.sort((a, b) => {
-        if (typeof a[name] === 'number' && typeof b[name] === 'number') return (order === 'asc') ? a[name] - b[name] : b[name] - a[name];
-        if (a[name] < b[name]) return (order === 'asc') ? -1 : 1;
-        if (a[name] > b[name]) return (order === 'asc') ? 1 : -1;
-        return 0;
-      });
     },
     onSubmit(room) {
       eventBus.submit(room);
@@ -128,7 +115,7 @@ export default {
     },
   },
   created() {
-    // Add eventBus listeners
+    // Add eventBus listeners and assign a random image to each room
     eventBus.$on('changeLoading', (value) => { this.loading = value; });
     eventBus.$on('changeRooms', (rooms) => {
       this.rooms = rooms.map(room => Object.assign(room, {
