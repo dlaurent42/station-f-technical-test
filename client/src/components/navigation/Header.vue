@@ -8,7 +8,7 @@
       <span class="menu-burger-bar" :class="{ opened: show, closed: !show }"/>
       <span class="menu-burger-bar" :class="{ opened: show, closed: !show }"/>
     </div>
-    <app-fade-in-transition>
+    <app-transition-fade>
       <div v-if="show" class="menu-container">
         <div class="menu-items">
           <router-link
@@ -41,7 +41,7 @@
           </div>
         </div>
       </div>
-    </app-fade-in-transition>
+    </app-transition-fade>
   </div>
 </template>
 

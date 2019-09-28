@@ -1,9 +1,9 @@
 <template>
   <div>
     <h4>{{ rooms.length }} rooms available</h4>
-    <div v-if="loading">Loading ...</div>
 
     <!-- list of room cards -->
+    <div v-if="loading" class="loading">Loading ...</div>
     <mu-grid-list v-else class="booking-grid">
       <mu-card class="card" v-for="room in rooms" :key="room._id">
         <mu-card-media>
@@ -129,6 +129,14 @@ export default {
 <style lang="scss" scoped>
 h4 {
   font-size: 30px;
+}
+.loading {
+  font-family: 'Oswald';
+  font-size: 40px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #666;
+  padding: 70px 0;
 }
 .booking-grid {
   background: transparent;

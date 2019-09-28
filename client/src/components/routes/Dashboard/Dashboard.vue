@@ -205,7 +205,7 @@ export default {
       text-align: center;
       font-size: 25px;
       font-family: 'Montserrat';
-      width: 50vw;
+      width: fit-content;
       text-align: center;
       margin: auto;
     }
