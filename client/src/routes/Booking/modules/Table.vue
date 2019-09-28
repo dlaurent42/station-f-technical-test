@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>{{ rooms.length }} rooms available</h3>
+    <h4>{{ rooms.length }} rooms available</h4>
     <div v-if="loading">Loading ...</div>
 
     <!-- list of room cards -->
@@ -127,17 +127,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h4 {
+  font-size: 30px;
+}
 .booking-grid {
   background: transparent;
   width: 90vw;
-  padding: 5vh 5vw;
+  padding: 0 5vw 5vh;
   margin: auto !important;
   justify-content: center;
-  & h3 {
-    text-align: left;
-    font-size: 20px;
-    padding-top: 40px;
-  }
   & .card {
     width: 100%;
     max-width: 375px;

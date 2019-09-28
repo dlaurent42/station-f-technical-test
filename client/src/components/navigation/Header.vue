@@ -1,5 +1,5 @@
 <template>
-  <div class="menu" v-if="isAuthenticated">
+  <div class="menu" v-if="isAuthenticated" :class="{ opened: show, closed: !show }">
     <router-link id="menu-logo" to="/" exact>
       <img src="@/assets/logo.png" alt="logo" class="logo"/>
     </router-link>
@@ -81,6 +81,9 @@ export default {
   -webkit-user-select: none;
   user-select: none;
   box-shadow: 1px 1px 5px rgb(50,50,50);
+  &.opened {
+    position: fixed;
+  }
   & .menu-logo {
     display: flex;
     flex-direction: row;
@@ -104,7 +107,7 @@ export default {
       display: block;
       width: 40px;
       height: 32px;
-      position: absolute;
+      position: fixed;
       top: -7px;
       left: -5px;
 

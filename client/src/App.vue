@@ -42,7 +42,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #app {
-  padding-bottom: 80px;
+  padding-bottom: 40px;
 }
 
 button, div.mu-form-item-label, div.mu-checkbox-label {

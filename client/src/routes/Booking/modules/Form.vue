@@ -229,7 +229,7 @@ export default {
   display: flex;
   flex-direction: column;
   & h3 {
-    font-size: 20px;
+    font-size: 40px;
     padding: 40px 0;
   }
   & .mu-form-item__focus {

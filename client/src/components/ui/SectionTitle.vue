@@ -54,7 +54,7 @@ export default {
     margin-bottom: 30px;
     font-weight: 500;
     font-size: 78px;
-    letter-spacing: 1px;
+    letter-spacing: 5px;
     text-shadow: 2px 2px 5px rgb(50,50,50);
   }
   & .section-title-secondary {
@@ -62,7 +62,7 @@ export default {
     line-height: 1.4em;
     font-weight: 300;
     margin-bottom: 55px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     text-shadow: 2px 2px 5px rgb(50,50,50);
   }
 
