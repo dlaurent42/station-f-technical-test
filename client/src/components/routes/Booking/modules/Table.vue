@@ -84,7 +84,7 @@
 
 <script>
 import moment from 'moment';
-import eventBus from '../../../eventBuses/booking';
+import eventBus from '../../../../eventBuses/booking';
 
 export default {
   data: () => ({

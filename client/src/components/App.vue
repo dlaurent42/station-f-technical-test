@@ -7,8 +7,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import * as types from './store/types/user';
-import Header from './components/navigation/Header.vue';
+import * as types from '../store/types/user';
+import Header from './navigation/Header.vue';
 
 export default {
   name: 'app',

@@ -26,7 +26,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import * as types from '../../store/types/user';
+import * as types from '../../../store/types/user';
 
 export default {
   title: 'Station F | Login',

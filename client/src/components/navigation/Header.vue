@@ -8,38 +8,40 @@
       <span class="menu-burger-bar" :class="{ opened: show, closed: !show }"/>
       <span class="menu-burger-bar" :class="{ opened: show, closed: !show }"/>
     </div>
-    <div v-if="show" class="menu-container">
-      <div class="menu-items">
-        <router-link
-          @click.native="show = !show"
-          class="menu-item"
-          to="/"
-          tag="div"
-          exact
-        >
-          Dashboard
-        </router-link>
-        <router-link
-          @click.native="show = !show"
-          class="menu-item"
-          to="/reservations"
-          tag="div"
-        >
-          Reservations
-        </router-link>
-        <router-link
-          @click.native="show = !show"
-          class="menu-item"
-          to="/booking"
-          tag="div"
-        >
-          Book a room
-        </router-link>
-        <div @click="onLogout" class="menu-item">
-          Logout
+    <app-fade-in-transition>
+      <div v-if="show" class="menu-container">
+        <div class="menu-items">
+          <router-link
+            @click.native="show = !show"
+            class="menu-item"
+            to="/"
+            tag="div"
+            exact
+          >
+            Dashboard
+          </router-link>
+          <router-link
+            @click.native="show = !show"
+            class="menu-item"
+            to="/reservations"
+            tag="div"
+          >
+            Reservations
+          </router-link>
+          <router-link
+            @click.native="show = !show"
+            class="menu-item"
+            to="/booking"
+            tag="div"
+          >
+            Book a room
+          </router-link>
+          <div @click="onLogout" class="menu-item">
+            Logout
+          </div>
         </div>
       </div>
-    </div>
+    </app-fade-in-transition>
   </div>
 </template>
 
@@ -83,6 +85,9 @@ export default {
   box-shadow: 1px 1px 5px rgb(50,50,50);
   &.opened {
     position: fixed;
+  }
+  &.closed {
+    position: absolute;
   }
   & .menu-logo {
     display: flex;
@@ -222,5 +227,12 @@ export default {
       }
     }
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

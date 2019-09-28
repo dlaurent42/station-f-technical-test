@@ -33,10 +33,10 @@ export default {
 
 <style lang="scss" scoped>
 .section-title {
-  top: 0;
+  top: 80px;
   left: 0;
   width: 100vw;
-  height: 600px;
+  height: 800px;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;

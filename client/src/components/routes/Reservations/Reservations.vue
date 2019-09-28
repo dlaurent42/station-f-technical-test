@@ -90,9 +90,8 @@
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 import { mapGetters } from 'vuex';
-import axios from '../../services/axios';
-import * as types from '../../store/types/user';
-import SectionTitle from '../../components/ui/SectionTitle.vue';
+import axios from '../../../services/axios';
+import * as types from '../../../store/types/user';
 
 const moment = extendMoment(Moment);
 
@@ -104,9 +103,6 @@ export default {
     openAlert: false,
     selectedReservation: '',
   }),
-  components: {
-    'app-section-title': SectionTitle,
-  },
   computed: {
     ...mapGetters({
       user: types.GET_USER,

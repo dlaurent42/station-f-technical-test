@@ -66,9 +66,8 @@ import Moment from 'moment';
 import { groupBy, countBy } from 'lodash';
 import { extendMoment } from 'moment-range';
 import { mapGetters } from 'vuex';
-import axios from '../../services/axios';
-import * as types from '../../store/types/user';
-import SectionTitle from '../../components/ui/SectionTitle.vue';
+import axios from '../../../services/axios';
+import * as types from '../../../store/types/user';
 import Stat from './modules/Stat.vue';
 
 const moment = extendMoment(Moment);
@@ -81,7 +80,6 @@ export default {
     favoriteDayToBookRooms: {},
   }),
   components: {
-    'app-section-title': SectionTitle,
     'app-dashboard-stat': Stat,
   },
   computed: {
