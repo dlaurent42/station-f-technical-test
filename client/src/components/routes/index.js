@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from '../../store'; // eslint-disable-line
-import * as types from '../../store/types/user';
+import store from '@/store'; // eslint-disable-line
+import * as types from '@/store/types/user';
 
 Vue.use(Router);
 

@@ -66,10 +66,10 @@
 <script>
 import moment from 'moment';
 import { mapGetters } from 'vuex';
-import eventBus from '../../../../eventBuses/booking';
-import * as types from '../../../../store/types/user';
-import axios from '../../../../services/axios';
-import endDateFormat from '../../../../utils/datetimeFromChineseToEnglish';
+import eventBus from '@/eventBuses/booking';
+import * as types from '@/store/types/user';
+import axios from '@/services/axios';
+import endDateFormat from '@/utils/datetimeFromChineseToEnglish';
 
 export default {
   data: () => ({
