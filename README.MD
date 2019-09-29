@@ -1,5 +1,7 @@
 # STATION F - BOOK A MEETING ROOM
 
+Booking a meeting room has never been easier.
+
 ## TABLE OF CONTENTS
 - [Getting Started](##GETTING&#32;STARTED)
   * [API Installation](###API&#32;INSTALLATION)
