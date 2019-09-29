@@ -8,9 +8,8 @@
     "@vue/airbnb"
   ],
   "rules": {
-    "no-console": "off",
     "import/no-cycle": {
-      "maxDepth": 2
+      "maxDepth": 1
     }
   },
   "parserOptions": {
