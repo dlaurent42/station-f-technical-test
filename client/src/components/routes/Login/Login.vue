@@ -38,8 +38,8 @@ export default {
       { validate: val => !!val, message: 'Password must be filled in' },
     ],
     form: {
-      username: '',
-      password: '',
+      username: 'dlaurent',
+      password: 'awesome',
     },
     images: [
       'http://trials.vevs.website/web-demo/meeting-room-booking-website/app/web/upload/medium/dummy-314-1568044665.jpg',
