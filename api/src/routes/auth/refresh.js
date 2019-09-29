@@ -1,4 +1,5 @@
 import express from 'express';
+import { omit } from 'lodash';
 import JWT from '../../config/constants/jwt';
 import { verify, sign } from '../../helpers';
 
@@ -17,7 +18,7 @@ export default express.Router().get('/refresh', (req, res) => {
     .then((decoded) => {
 
       // Assign decoded data
-      payload = decoded;
+      payload = omit(decoded, ['iat', 'exp']);
 
       // Ask for a new access token
       return sign(payload, JWT.DURATION);
