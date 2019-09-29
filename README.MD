@@ -3,19 +3,19 @@
 Booking a meeting room has never been easier.
 
 ## TABLE OF CONTENTS
-- [Getting Started](##GETTING&#32;STARTED)
-  * [API Installation](###API&#32;INSTALLATION)
-  * [Client Installation](###CLIENT&#32;INSTALLATION)
-- [API](##API)
-  * [Database](###DATABASE)
-  * [Securing](###SECURING)
-  * [Returned Data](###RETURNED&#32;DATA)
-  * [Folder Organization](###API&#32;FOLDER&#32;ORGANIZATION)
-- [Client](##CLIENT)
-  * [Libraries](###LIBRARIES)
-  * [Authentication](###AUTHENTICATION)
-  * [Routes](###ROUTES)
-  * [Folder Organization](##CLIENT&#32;FOLDER&#32;ORGANIZATION)
+- [Getting Started](#GETTING&#32;STARTED)
+  * [API Installation](#API&#32;INSTALLATION)
+  * [Client Installation](#CLIENT&#32;INSTALLATION)
+- [API](#API)
+  * [Database](#DATABASE)
+  * [Securing](#SECURING)
+  * [Returned Data](#RETURNED&#32;DATA)
+  * [Folder Organization](#API&#32;FOLDER&#32;ORGANIZATION)
+- [Client](#CLIENT)
+  * [Libraries](#LIBRARIES)
+  * [Authentication](#AUTHENTICATION)
+  * [Routes](#ROUTES)
+  * [Folder Organization](#CLIENT&#32;FOLDER&#32;ORGANIZATION)
 
 ---
 ## GETTING STARTED
@@ -310,13 +310,13 @@ The application contains 4 routes (404 are redirected to `/`).
 #### Login
 ##### Authentication: false
 
-Before accessing the booking system, each user has to be authenticated. Once authenticated, he will receive [tokens](####Axios&#32;Configuration) used to fetch, modify, post data to the API.
+Before accessing the booking system, each user has to be authenticated. Once authenticated, he will receive [tokens](#Axios&#32;Configuration) used to fetch, modify, post data to the API.
 
 User authentication is persistent (`client/src/stores/modules/user/actions.js [ACTION_AUTOLOGIN]`).
 
 User data is managed using global state (`Vuex`).
 
-If API is correctly [setup](###API&#32;INSTALLATION), you can log in using `dlaurent` or `admin` as `username` and `awesome` as password.
+If API is correctly [setup](#API&#32;INSTALLATION), you can log in using `dlaurent` or `admin` as `username` and `awesome` as password.
 
 ![login](https://github.com/dlaurent42/station-f-technical-test/blob/dev/documentation/login.jpg)
 
