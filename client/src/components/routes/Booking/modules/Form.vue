@@ -66,7 +66,8 @@
 <script>
 import moment from 'moment';
 import { mapGetters } from 'vuex';
-import eventBus from '@/eventBuses/booking';
+import bookingEventBus from '@/eventBuses/booking';
+import notificationEventBus from '@/eventBuses/notifications';
 import * as types from '@/store/types/user';
 import axios from '@/services/axios';
 import endDateFormat from '@/utils/datetimeFromChineseToEnglish';
@@ -126,12 +127,15 @@ export default {
 
           // Send request
           axios.post('/reservations', data)
-            .then(res => (
-              (res.data.success)
-                ? this.onDateChange()
-                : null
-            ))
-            .catch(() => {});
+            .then((response) => {
+              if (response.data.success) {
+                notificationEventBus.pushNotification('success', 'Thank you for using our service');
+                this.onDateChange();
+              } else {
+                notificationEventBus.pushNotification('error', 'An error occured while booking');
+              }
+            })
+            .catch(error => notificationEventBus.pushNotification('error', error.message));
         });
     },
 
@@ -142,7 +146,7 @@ export default {
           // Check validity of the form
           // Do not send request to api if form is not valid ...
           if (!isValid) return;
-          eventBus.setLoading(true);
+          bookingEventBus.setLoading(true);
 
           // Fetch slots for date
           axios.get(`/rooms/slots?date=${this.form.datetime}`)
@@ -165,13 +169,16 @@ export default {
               // Now filter on other static fields
               this.onOtherChanges();
             })
-            .catch(() => eventBus.setLoading(false));
+            .catch((error) => {
+              bookingEventBus.setLoading(false);
+              notificationEventBus.pushNotification('error', error.message);
+            });
         });
     },
 
     // Called in case of equipments / capacity change
     onOtherChanges() {
-      eventBus.setLoading(true);
+      bookingEventBus.setLoading(true);
 
       // Filter on equipments and room capacity
       this.filteredRooms = this.rooms.filter(room => (
@@ -189,12 +196,12 @@ export default {
           ))
         )
       ));
-      eventBus.setRooms(this.filteredRooms);
-      eventBus.setLoading(false);
+      bookingEventBus.setRooms(this.filteredRooms);
+      bookingEventBus.setLoading(false);
     },
   },
   created() {
-    eventBus.setLoading(true);
+    bookingEventBus.setLoading(true);
 
     // Fetch reservation slots
     axios.get('/rooms/slots')
@@ -203,8 +210,8 @@ export default {
         if (response.data.success) {
           this.rooms = response.data.payload;
           this.filteredRooms = this.rooms;
-          eventBus.setLoading(false);
-          eventBus.setRooms(this.rooms);
+          bookingEventBus.setLoading(false);
+          bookingEventBus.setRooms(this.rooms);
         }
 
         // Fetch equipments list
@@ -213,11 +220,15 @@ export default {
       .then((response) => {
         // Update equipments list in case of success
         if (response.data.success) this.equipmentsList = response.data.payload;
+        else notificationEventBus.pushNotification('error', 'An error occured while fetching data');
       })
-      .catch(() => eventBus.setLoading(false));
+      .catch((error) => {
+        bookingEventBus.setLoading(false);
+        notificationEventBus.pushNotification('error', error.message);
+      });
 
     // Add eventBus listeners
-    eventBus.$on('submit', roomId => this.onSubmit(roomId));
+    bookingEventBus.$on('submit', roomId => this.onSubmit(roomId));
   },
 };
 </script>
