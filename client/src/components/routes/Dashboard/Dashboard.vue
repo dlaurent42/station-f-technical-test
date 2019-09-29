@@ -43,9 +43,9 @@
       <!-- time spent in meetings -->
       <h3 class="dashboard-subtitle">Your time in meetings</h3>
       <mu-flex justify-content="around" wrap="wrap">
-        <app-dashboard-stat :duration="34" text="this week"/>
-        <app-dashboard-stat :duration="340" text="this month"/>
-        <app-dashboard-stat :duration="3400" text="this year"/>
+        <app-dashboard-stat :duration="getTimeSpentInMeetings('week')" text="this week"/>
+        <app-dashboard-stat :duration="getTimeSpentInMeetings('month')" text="this month"/>
+        <app-dashboard-stat :duration="getTimeSpentInMeetings('year')" text="this year"/>
       </mu-flex>
 
       <!-- best day to book a room -->
