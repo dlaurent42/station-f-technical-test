@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 import { uniqBy, get, find, omit, flatten } from 'lodash';
 
 // Import data from json input
-import data from '../assets/rooms.json';
-import users from '../assets/users.json';
+import data from '../data/rooms.json';
+import users from '../data/users.json';
 
 // Import config
 import { DATABASE } from '../src/config';
