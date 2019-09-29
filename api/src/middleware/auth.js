@@ -12,7 +12,7 @@ export default (req, res, next) => {
   if (!scope) return res.status(404).end();
 
   // Check if scope is public
-  if (scope === SCOPE.STATUS.PUBLIC) return next();
+  if (scope === SCOPE.STATUS.PUBLIC || process.env.NODE_ENV === 'development') return next();
 
   // Check if scope is admin
   if (scope === SCOPE.STATUS.ADMIN) return res.status(403).end();

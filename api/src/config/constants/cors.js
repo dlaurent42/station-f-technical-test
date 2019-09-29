@@ -8,7 +8,7 @@ const WHITE_LIST = {
 
 export default {
   origin: (origin, callback) => {
-    if ([WHITE_LIST.CLIENT].indexOf(origin) !== -1) callback(null, true);
+    if (process.env.NODE_ENV === 'development' || [WHITE_LIST.CLIENT].indexOf(origin) !== -1) callback(null, true);
     else callback(new Error('CORS identification error!'));
   },
 };
