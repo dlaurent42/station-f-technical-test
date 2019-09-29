@@ -316,28 +316,28 @@ User data is managed using global state (`Vuex`).
 
 If API is correctly [setup](###API&#32;INSTALLATION), you can log in using `dlaurent` or `admin` as `username` and `awesome` as password.
 
-![login](https://github.com/dlaurent42/station-f-technical-test/tree/dev/documentation/login.jpg)
+![login](https://github.com/dlaurent42/station-f-technical-test/blob/dev/documentation/login.jpg)
 
 #### Dashboard
 ##### Authentication: true
 
 `Dashboard` page displays different statistics based on user passed reservations. Once logged in, user is redirected here.
 
-![dashboard](https://github.com/dlaurent42/station-f-technical-test/tree/dev/documentation/dashboard.jpg)
+![dashboard](https://github.com/dlaurent42/station-f-technical-test/blob/dev/documentation/dashboard.jpg)
 
 #### Booking
 ##### Authentication: true
 
 `Booking` page is the reservation module. User has to filter rooms by selecting at least a datetime and a duration. He can check dynamically available rooms.
 
-![booking](https://github.com/dlaurent42/station-f-technical-test/tree/dev/documentation/booking.jpg)
+![booking](https://github.com/dlaurent42/station-f-technical-test/blob/dev/documentation/booking.jpg)
 
 #### Reservations
 ##### Authentication: true
 
 `Reservations` page permits the user to consult and delete his reservations.
 
-![reservations](https://github.com/dlaurent42/station-f-technical-test/tree/dev/documentation/reservations.jpg)
+![reservations](https://github.com/dlaurent42/station-f-technical-test/blob/dev/documentation/reservations.jpg)
 
 ---
 ### CLIENT FOLDER ORGANIZATION
