@@ -37,15 +37,10 @@ export default {
     }),
   },
   created() {
-    // Add event listener
+    // Add event listener for push notifications
     eventBus.$on('pushNotification', (data) => {
-      this.alert = {
-        ...data,
-        show: true,
-      };
-      setTimeout(() => {
-        this.alert.show = false;
-      }, 5 * 1000);
+      this.alert = { ...data, show: true };
+      setTimeout(() => { this.alert.show = false; }, 5 * 1000);
     });
   },
 };

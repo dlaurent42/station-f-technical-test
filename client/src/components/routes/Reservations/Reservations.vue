@@ -8,10 +8,9 @@
 
       <!-- navigation tabs -->
       <mu-tabs :value.sync="selected" color="rgb(44,44,44)" indicator-color="green" full-width>
-        <mu-tab>TODAY</mu-tab>
-        <mu-tab>WEEK</mu-tab>
-        <mu-tab>MONTH</mu-tab>
-        <mu-tab>YEAR</mu-tab>
+        <mu-tab v-for="tab in ['TODAY', 'WEEK', 'MONTH', 'YEAR']" :key="tab">
+          {{ tab }}
+        </mu-tab>
       </mu-tabs>
 
       <!-- reservations list -->
@@ -44,7 +43,7 @@
 
                   <!-- reservation deletion icon -->
                   <font-awesome-icon
-                    @click="openAlert = true; selectedReservation = reservation._id"
+                    @click="showConfirmationDialog = true; selectedReservation = reservation._id"
                     class="reservation-slot-icon"
                     icon="trash-alt"
                   />
@@ -58,31 +57,12 @@
     </mu-container>
 
     <!-- reservation confirmation dialog box -->
-    <mu-dialog
-      title="Confirm deletion"
-      width="400px"
-      :esc-press-close="false"
-      :overlay-close="false"
-      :open.sync="openAlert"
-    >
-      Do you confirm deletion of this reservation ?
-      <mu-button
-        class="alert-action"
-        slot="actions"
-        flat
-        @click="openAlert = false"
-      >
-        Cancel
-      </mu-button>
-      <mu-button
-        class="alert-action"
-        slot="actions"
-        color="#222"
-        @click="onDeletion"
-      >
-        Confirm
-      </mu-button>
-    </mu-dialog>
+    <app-confirmation-dialog
+      :show="showConfirmationDialog"
+      text="Do you confirm deletion of this reservation ?"
+      @submit="onDeletion"
+      @close="showConfirmationDialog = false"
+    />
   </div>
 </template>
 
@@ -101,7 +81,7 @@ export default {
   data: () => ({
     selected: 0,
     reservations: Array(4).fill([]),
-    openAlert: false,
+    showConfirmationDialog: false,
     selectedReservation: '',
   }),
   computed: {
@@ -118,7 +98,7 @@ export default {
     },
     onDeletion() {
       // Close dialog box and reset deletion
-      this.openAlert = false;
+      this.showConfirmationDialog = false;
 
       // Send delete request to api
       axios.delete(`/reservations/${this.selectedReservation}`)

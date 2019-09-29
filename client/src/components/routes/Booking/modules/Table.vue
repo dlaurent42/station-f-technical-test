@@ -14,7 +14,7 @@
           {{ room.description }}
         </mu-card-text>
         <mu-card-actions class="card-actions">
-          <mu-button flat @click="openDialog(room)">Details</mu-button>
+          <mu-button flat @click="roomDetails = { data: room, show: true }">Details</mu-button>
           <mu-button
             color="rgb(74,74,74)"
             :disabled="!room.isBookable"
@@ -27,90 +27,40 @@
     </mu-grid-list>
 
     <!-- details dialog box -->
-    <mu-dialog :open.sync="dialogIsOpened">
-      <div class="dialog-wrapper">
-        <mu-card class="dialog-card">
-          <mu-card-media>
-            <img :src="dialogRoomData.image">
-          </mu-card-media>
-          <mu-card-title :title="dialogRoomData.name" />
-
-          <!-- room capacity -->
-          <mu-sub-header>Capacity</mu-sub-header>
-          <mu-card-text>
-            This room can contains up to
-            {{ dialogRoomData.capacity }}
-            attendees
-          </mu-card-text>
-
-          <!-- room description -->
-          <mu-sub-header>Description</mu-sub-header>
-          <mu-card-text>{{ dialogRoomData.description }}</mu-card-text>
-
-          <!-- equipments list -->
-          <mu-sub-header>Equipments</mu-sub-header>
-          <mu-card-text v-if="dialogRoomData.equipments && dialogRoomData.equipments.length">
-            <ul>
-              <li v-for="equipment in dialogRoomData.equipments" :key="equipment._id">
-                {{ equipment.name }}
-              </li>
-            </ul>
-          </mu-card-text>
-          <mu-card-text v-else>No equipments in this room.</mu-card-text>
-
-          <!-- reservations list -->
-          <mu-sub-header>Reservations</mu-sub-header>
-          <mu-card-text v-if="dialogRoomData.reservations && dialogRoomData.reservations.length">
-            <ul>
-              <li v-for="reservation in dialogRoomData.reservations" :key="reservation._id">
-                Reserved by
-                {{ reservation.user.username }}
-                {{ formattedFromTo(reservation.from, reservation.to) }}
-              </li>
-            </ul>
-          </mu-card-text>
-          <mu-card-text v-else>No reservation for this day.</mu-card-text>
-
-          <!-- actions -->
-          <mu-card-actions class="card-actions">
-            <mu-button flat @click="dialogIsOpened = false">Close</mu-button>
-            <mu-button
-              color="rgb(74,74,74)"
-              @click="dialogIsOpened = false;
-              onSubmit(dialogRoomData._id)"
-              :disabled="!dialogRoomData.isBookable"
-            >
-              Book
-            </mu-button>
-          </mu-card-actions>
-        </mu-card>
-      </div>
+    <mu-dialog :open.sync="roomDetails.show">
+      <app-room-details
+        :room="roomDetails.data"
+        @close="roomDetails.show = false"
+        @submit="onSubmit(roomDetails.data._id)"
+      />
     </mu-dialog>
   </div>
 </template>
 
 <script>
 import { find, get, sortBy } from 'lodash';
-import moment from 'moment';
+import TableDetails from './TableDetails.vue';
 import eventBus from '@/eventBuses/booking';
 
 export default {
   data: () => ({
-    dialogIsOpened: false,
-    dialogRoomData: {},
+    roomDetails: {
+      show: false,
+      data: {},
+    },
     loading: false,
     rooms: [],
   }),
+  components: {
+    'app-room-details': TableDetails,
+  },
   methods: {
-    formattedFromTo(from, to) {
-      return `from ${moment(from).format('HH:mm')} to ${moment(to).format('HH:mm')}`;
-    },
     onSubmit(room) {
       eventBus.submit(room);
     },
     openDialog(room) {
       this.dialogRoomData = room;
-      this.dialogIsOpened = true;
+      this.roomDetailsOpen = true;
     },
   },
   created() {
@@ -184,8 +134,12 @@ h4 {
   max-width: 500px;
   max-height: 50vh;
   overflow-y: auto;
+  overflow-x: hidden;
   & .mu-dialog-body {
     padding: 0;
+    & .mu-card {
+      width: fit-content;
+    }
     & .card-actions {
       display: flex;
       flex-direction: row;
@@ -196,6 +150,7 @@ h4 {
     }
   }
   @media (max-width: 768px) {
+    max-width: 300px;
     width: 100vw;
     height: 90vh;
   }
