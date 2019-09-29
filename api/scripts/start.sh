@@ -16,12 +16,6 @@ DATABASE_NAME=$(cat config/.env.$NODE_ENV | grep "DATABASE_NAME" | cut -d'=' -f2
 DATABASE_USER=$(cat config/.env.$NODE_ENV | grep "DATABASE_USER" | cut -d'=' -f2)
 DATABASE_PASS=$(cat config/.env.$NODE_ENV | grep "DATABASE_PASS" | cut -d'=' -f2)
 
-echo "DATABASE_HOST: $DATABASE_HOST"
-echo "DATABASE_PORT: $DATABASE_PORT"
-echo "DATABASE_NAME: $DATABASE_NAME"
-echo "DATABASE_USER: $DATABASE_USER"
-echo "DATABASE_PASS: $DATABASE_PASS"
-
 # Check if database has been initialized
 [ ! -d "database" ] && initialized="false" || initialized="true"
 
