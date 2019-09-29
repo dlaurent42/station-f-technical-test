@@ -13,8 +13,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "./scripts/start.sh NODE_ENV=development",
-    "prod": "./scripts/start.sh NODE_ENV=development",
-    "start": "npm run dev",
+    "prod": "./scripts/start.sh NODE_ENV=production",
+    "start": "npm run $(git branch | grep \\* | cut -d ' ' -f2)",
     "lint": "eslint \"**/*.js\"",
     "test": "jest",
     "test:coverage": "jest --coverage --watchAll"
