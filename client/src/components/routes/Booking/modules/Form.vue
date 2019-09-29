@@ -1,66 +1,74 @@
 <template>
-  <mu-form ref="form" :model="form" class="booking-form">
-    <h3>Find the room that fit your needs</h3>
-    <mu-flex wrap="wrap" justify-content="between" direction="row" align-items="center" fill>
+  <div>
+    <mu-form ref="form" :model="form" class="booking-form">
+      <h3>Find the room that fit your needs</h3>
+      <mu-flex wrap="wrap" justify-content="between" direction="row" align-items="center" fill>
 
-      <!-- select date -->
-      <mu-form-item label="Date" prop="datetime" :rules="datetimeRules">
-        <mu-date-input
-          v-model="form.datetime"
-          landscape
-          :date-time-format="endDateFormat"
-          @change="onDateChange"
-        />
-      </mu-form-item>
+        <!-- select date -->
+        <mu-form-item label="Date" prop="datetime" :rules="datetimeRules">
+          <mu-date-input
+            v-model="form.datetime"
+            landscape
+            :date-time-format="endDateFormat"
+            @change="onDateChange"
+          />
+        </mu-form-item>
 
-      <!-- select time -->
-      <mu-form-item label="Time" prop="datetime" :rules="datetimeRules">
-        <mu-date-input
-          type="time"
-          v-model="form.datetime"
-          landscape
-          @change="onDateChange"
-        />
-      </mu-form-item>
+        <!-- select time -->
+        <mu-form-item label="Time" prop="datetime" :rules="datetimeRules">
+          <mu-date-input
+            type="time"
+            v-model="form.datetime"
+            landscape
+            @change="onDateChange"
+          />
+        </mu-form-item>
 
-      <!-- select duration -->
-      <mu-form-item label="Duration (in minutes)" prop="duration" :rules="durationRules">
-        <mu-text-field
-          type="number"
-          v-model="form.duration"
-          prop="duration"
-          @keydown="form.duration = parseInt(form.duration)"
-          @change="onDateChange"
-        />
-      </mu-form-item>
+        <!-- select duration -->
+        <mu-form-item label="Duration (in minutes)" prop="duration" :rules="durationRules">
+          <mu-text-field
+            type="number"
+            v-model="form.duration"
+            prop="duration"
+            @keydown="form.duration = parseInt(form.duration)"
+            @change="onDateChange"
+          />
+        </mu-form-item>
 
-      <!-- select number of attendees -->
-      <mu-form-item label="Attendees" prop="capacity" :rules="capacityRules">
-        <mu-text-field
-          type="number"
-          v-model="form.capacity"
-          prop="capacity"
-          @keydown="form.capacity = parseInt(form.capacity)"
-          @change="filterRooms"
-        />
-      </mu-form-item>
-    </mu-flex>
-    <hr>
+        <!-- select number of attendees -->
+        <mu-form-item label="Attendees" prop="capacity" :rules="capacityRules">
+          <mu-text-field
+            type="number"
+            v-model="form.capacity"
+            prop="capacity"
+            @keydown="form.capacity = parseInt(form.capacity)"
+            @change="filterRooms"
+          />
+        </mu-form-item>
+      </mu-flex>
+      <hr>
 
-    <!-- select mandatory equipments -->
-    <mu-flex wrap="wrap" justify-content="start" direction="row" align-items="center" fill>
-      <mu-form-item label="Equipments" prop="equipments">
-        <mu-checkbox
-          v-for="equipment in equipmentsList"
-          v-model="form.equipments"
-          :key="equipment._id"
-          :label="equipment.name"
-          :value="equipment._id"
-          @change="filterRooms"
-        />
-      </mu-form-item>
-    </mu-flex>
-  </mu-form>
+      <!-- select mandatory equipments -->
+      <mu-flex wrap="wrap" justify-content="start" direction="row" align-items="center" fill>
+        <mu-form-item label="Equipments" prop="equipments">
+          <mu-checkbox
+            v-for="equipment in equipmentsList"
+            v-model="form.equipments"
+            :key="equipment._id"
+            :label="equipment.name"
+            :value="equipment._id"
+            @change="filterRooms"
+          />
+        </mu-form-item>
+      </mu-flex>
+    </mu-form>
+    <app-confirmation-dialog
+      :show="showConfirmationDialog"
+      text="Do you confirm the reservation ?"
+      @submit="onSubmit"
+      @close="showConfirmationDialog = false"
+    />
+  </div>
 </template>
 
 <script>
@@ -74,6 +82,9 @@ import endDateFormat from '@/utils/datetimeFromChineseToEnglish';
 
 export default {
   data: () => ({
+    // Dialogbox
+    showConfirmationDialog: false,
+
     // Data
     rooms: [],
     filteredRooms: [],
@@ -94,8 +105,10 @@ export default {
       { validate: value => value > 0, message: 'Room capacity must be positive' },
       { validate: value => value > 0 && value < 600, message: 'Room capacity cannot exceed 600 ppl' },
     ],
+
     // Form data
     form: {
+      room: '',
       datetime: new Date(),
       duration: 30,
       capacity: 1,
@@ -112,7 +125,8 @@ export default {
     }),
   },
   methods: {
-    onSubmit(roomId) {
+    onSubmit() {
+      this.showConfirmationDialog = false;
       this.$refs.form.validate()
         .then((isValid) => {
           if (!isValid) return;
@@ -121,7 +135,7 @@ export default {
           const data = {
             from: new Date(this.form.datetime),
             duration: parseInt(this.form.duration, 10),
-            roomId,
+            roomId: this.form.room,
             userId: this.user.id,
           };
 
@@ -227,7 +241,10 @@ export default {
       });
 
     // Add eventBus listeners
-    bookingEventBus.$on('submit', roomId => this.onSubmit(roomId));
+    bookingEventBus.$on('submit', (roomId) => {
+      this.form.room = roomId;
+      this.showConfirmationDialog = true;
+    });
   },
 };
 </script>

@@ -27,6 +27,7 @@ import titleMixin from './mixins/documentTitle';
 
 // Components to be registered
 import SectionTitle from './components/ui/utils/SectionTitle.vue';
+import ConfirmationDialog from './components/ui/utils/ConfirmationDialog.vue';
 import Fade from './components/ui/transitions/Fade.vue';
 
 Vue.config.productionTip = false;
@@ -36,6 +37,7 @@ library.add(faTrashAlt, faTrophy, faMedal, faAward);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('app-transition-fade', Fade);
 Vue.component('app-section-title', SectionTitle);
+Vue.component('app-confirmation-dialog', ConfirmationDialog);
 Vue.use(MuseUI);
 
 // Register components
