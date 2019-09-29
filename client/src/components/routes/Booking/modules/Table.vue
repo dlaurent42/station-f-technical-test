@@ -3,9 +3,17 @@
     <h4>{{ rooms.reduce((total, room) => total + +room.isBookable, 0) }} rooms available</h4>
 
     <!-- list of room cards -->
-    <div v-if="loading" class="loading">Loading ...</div>
-    <mu-grid-list v-else class="booking-grid">
-      <mu-card class="card" v-for="room in rooms" :key="room._id">
+    <mu-grid-list class="booking-grid">
+      <div class="loading" :class="{ 'loading-hide': !loading }">
+        <PulseLoader color="#666" />
+        Spinner duration set to 2500ms
+      </div>
+      <mu-card
+        class="card"
+        v-for="room in rooms"
+        :key="room._id"
+        :class="{ 'card-hide': loading }"
+      >
         <mu-card-media>
           <img :src="room.image">
         </mu-card-media>
@@ -38,6 +46,7 @@
 </template>
 
 <script>
+import { PulseLoader } from '@saeris/vue-spinners';
 import { find, get, sortBy } from 'lodash';
 import TableDetails from './TableDetails.vue';
 import eventBus from '@/eventBuses/booking';
@@ -53,6 +62,7 @@ export default {
   }),
   components: {
     'app-room-details': TableDetails,
+    PulseLoader,
   },
   methods: {
     onSubmit(room) {
@@ -76,7 +86,13 @@ export default {
     ];
 
     // Add eventBus listeners and assign a random image to each room
-    eventBus.$on('changeLoading', (value) => { this.loading = value; });
+    eventBus.$on('changeLoading', (value) => {
+      if (this.loading && !value) {
+        setTimeout(() => {
+          this.loading = value;
+        }, 2500);
+      } else this.loading = value;
+    });
     eventBus.$on('changeRooms', (rooms) => {
       this.rooms = sortBy(rooms.map(room => Object.assign(room, {
         image: get(find(this.rooms, { _id: room._id }), 'image') || images[Math.floor(Math.random() * images.length)], // eslint-disable-line
@@ -91,12 +107,21 @@ h4 {
   font-size: 30px;
 }
 .loading {
+  position: absolute;
   font-family: 'Oswald';
-  font-size: 40px;
+  font-size: 20px;
   text-transform: uppercase;
   text-align: center;
   color: #666;
   padding: 70px 0;
+  transition: .5s ease-in-out;
+  & div {
+    margin-bottom: 20px;
+  }
+  &.loading-hide {
+    opacity: 0;
+    transition: .5s ease-in-out;
+  }
 }
 .booking-grid {
   background: transparent;
@@ -119,6 +144,11 @@ h4 {
       & button {
         margin: 10px 10px;
       }
+    }
+    transition: .5s ease-in-out;
+    &.card-hide {
+      opacity: 0;
+      transition: .5s ease-in-out;
     }
   }
   & .dialog-wrapper {
