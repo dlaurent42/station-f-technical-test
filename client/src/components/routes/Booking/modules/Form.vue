@@ -41,7 +41,7 @@
           v-model="form.capacity"
           prop="capacity"
           @keydown="form.capacity = parseInt(form.capacity)"
-          @change="onOtherChanges"
+          @change="filterRooms"
         />
       </mu-form-item>
     </mu-flex>
@@ -56,7 +56,7 @@
           :key="equipment._id"
           :label="equipment.name"
           :value="equipment._id"
-          @change="onOtherChanges"
+          @change="filterRooms"
         />
       </mu-form-item>
     </mu-flex>
@@ -151,23 +151,10 @@ export default {
           // Fetch slots for date
           axios.get(`/rooms/slots?date=${this.form.datetime}`)
             .then((response) => {
-              // Convert datetime to moment
-              const from = moment.utc(this.form.datetime).set({ second: 0, millisecond: 0 });
-              const to = moment.utc(from).add(parseInt(this.form.duration, 10), 'minutes');
+              this.rooms = response.data.payload;
 
-              // Filter rooms based on slots
-              this.filteredRooms = response.data.payload.filter(room => (
-                !room.reservations.some(reservation => (
-                  from.diff(moment.utc(reservation.to)) < 0
-                  && moment.utc(reservation.from).diff(to) < 0
-                ))
-              ));
-
-              // Assign results to rooms
-              this.rooms = this.filteredRooms;
-
-              // Now filter on other static fields
-              this.onOtherChanges();
+              // Now filter received rooms
+              this.filterRooms();
             })
             .catch((error) => {
               bookingEventBus.setLoading(false);
@@ -177,41 +164,53 @@ export default {
     },
 
     // Called in case of equipments / capacity change
-    onOtherChanges() {
+    filterRooms() {
       bookingEventBus.setLoading(true);
 
-      // Filter on equipments and room capacity
-      this.filteredRooms = this.rooms.filter(room => (
+      // Convert datetime to moment
+      const from = moment.utc(this.form.datetime).set({ second: 0, millisecond: 0 });
+      const to = moment.utc(from).add(parseInt(this.form.duration, 10), 'minutes');
 
-        // Verify capacity
-        room.capacity >= parseInt(this.form.capacity, 10)
-        && (
+      // Filter on equipments, capacity and datetime
+      this.filteredRooms = this.rooms.map(room => ({
+        ...room,
+        isBookable: (
+          // Verify capacity
+          room.capacity >= parseInt(this.form.capacity, 10)
+          && (
 
-          // Verify if any equipment is required
-          this.form.equipments.length === 0
+            // Verify if any equipment is required
+            this.form.equipments.length === 0
 
-          // For each equipment required, verify it is included in room
-          || !this.form.equipments.some(equipment => (
-            !room.equipments.map(el => el._id).includes(equipment) // eslint-disable-line
+            // For each equipment required, verify it is included in room
+            || !this.form.equipments.some(equipment => (
+              !room.equipments.map(el => el._id).includes(equipment) // eslint-disable-line
+            ))
+          )
+
+          // Verify datetime
+          && from.diff(moment()) > 0
+          && !room.reservations.some(reservation => (
+            from.diff(moment.utc(reservation.to)) < 0
+            && moment.utc(reservation.from).diff(to) < 0
           ))
-        )
-      ));
+        ),
+      }));
       bookingEventBus.setRooms(this.filteredRooms);
       bookingEventBus.setLoading(false);
     },
   },
   created() {
     bookingEventBus.setLoading(true);
-
     // Fetch reservation slots
     axios.get('/rooms/slots')
       .then((response) => {
         // Update rooms in case of success
         if (response.data.success) {
           this.rooms = response.data.payload;
-          this.filteredRooms = this.rooms;
+          this.filteredRooms = this.rooms.map(room => ({ ...room, isBookable: false }));
           bookingEventBus.setLoading(false);
-          bookingEventBus.setRooms(this.rooms);
+          bookingEventBus.setRooms(this.filteredRooms);
         }
 
         // Fetch equipments list
