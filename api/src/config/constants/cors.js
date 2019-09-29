@@ -1,14 +1,6 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const WHITE_LIST = {
-  CLIENT: process.env.CLIENT_URI,
-};
-
 export default {
   origin: (origin, callback) => {
-    if (process.env.NODE_ENV === 'development' || [WHITE_LIST.CLIENT].indexOf(origin) !== -1) callback(null, true);
+    if (process.env.NODE_ENV === 'development' || origin === process.env.CLIENT_URI) callback(null, true);
     else callback(new Error('CORS identification error!'));
   },
 };

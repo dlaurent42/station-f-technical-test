@@ -34,8 +34,6 @@ npm install
 
 The database installation is performed using `api/scripts/start.sh` script which is called automatically.
 
-To ensure the database will be installed by the starting script, please check the `DATABASE_INIT` variable from the `api/.env` file is correctly set to `false`.
-
 The database is fed using data files foundable in `api/data` folder.
 
 #### Run development server
@@ -230,6 +228,7 @@ In case of HTML status code 200, the API always return data formatted as follow.
 
 ```
 API
+  |- CONFIG          : .env files
   |- DATA            : database feed
   |- DATABASE        : database itself (automatically generated)
   |- SCRIPTS         : scripts used on npm start

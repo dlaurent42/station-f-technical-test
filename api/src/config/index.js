@@ -1,3 +1,6 @@
+/* Config */
+import importConfig from './constants/dotenv'; // eslint-disable-line
+
 /* Constants */
 import API from './constants/api';
 import CLIENT from './constants/client';

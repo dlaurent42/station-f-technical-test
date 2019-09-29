@@ -6,7 +6,8 @@ import data from '../data/rooms.json';
 import users from '../data/users.json';
 
 // Import config
-import { DATABASE } from '../src/config';
+import importConfig from '../src/config/constants/dotenv'; // eslint-disable-line
+import DATABASE from '../src/config/constants/database';
 
 // Import models
 import { Equipments, Rooms, Users } from '../src/models';
