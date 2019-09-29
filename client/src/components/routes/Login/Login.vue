@@ -27,7 +27,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import * as types from '@/store/types/user';
-import eventBus from '@/eventBuses/notifications';
 
 export default {
   title: 'Station F | Login',
@@ -69,7 +68,6 @@ export default {
             username: this.form.username,
             password: this.form.password,
           });
-          eventBus.pushNotification(undefined, `Welcome back ${this.form.username}`);
         });
     },
   },

@@ -2,6 +2,7 @@ import { get } from 'lodash';
 import axios from '@/services/axios';
 import * as types from '../../types/user';
 import router from '@/components/routes';
+import eventBus from '@/eventBuses/notifications';
 
 export default {
   [types.ACTION_LOGIN]: ({ commit }, payload) => (
@@ -27,6 +28,7 @@ export default {
         .then((response) => {
           if (!response.data.success) return resolve(false);
           const user = response.data.payload;
+          eventBus.pushNotification(undefined, `Welcome back ${user.username}`);
           commit(types.MUTATE_LOGIN, { id: user._id, username: user.username, role: user.role }); // eslint-disable-line
           return resolve(true);
         })
