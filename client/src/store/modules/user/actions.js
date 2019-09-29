@@ -14,6 +14,7 @@ export default {
         localStorage.setItem('access-token', response.data.payload.accessToken);
         localStorage.setItem('refresh-token', response.data.payload.refreshToken);
         localStorage.setItem('user-id', user._id); // eslint-disable-line
+        eventBus.pushNotification(undefined, `Welcome back ${user.username}`);
         router.replace('/');
       })
       .catch((error) => {
@@ -28,7 +29,6 @@ export default {
         .then((response) => {
           if (!response.data.success) return resolve(false);
           const user = response.data.payload;
-          eventBus.pushNotification(undefined, `Welcome back ${user.username}`);
           commit(types.MUTATE_LOGIN, { id: user._id, username: user.username, role: user.role }); // eslint-disable-line
           return resolve(true);
         })
