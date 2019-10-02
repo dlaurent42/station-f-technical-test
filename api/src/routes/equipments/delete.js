@@ -8,7 +8,11 @@ import { deleteOneById, pull } from '../../helpers';
 */
 export default express.Router().delete('/:id', (req, res) => (
   deleteOneById(Equipments, req.params.id)
-    .then(() => pull(Rooms, 'equipments', req.params.id))
-    .then(() => res.status(200).json({ success: true }))
+    .then(success => (
+      (success)
+        ? { success, documents: pull(Rooms, 'equipments', req.params.id) }
+        : { success, documents: [] }
+    ))
+    .then(({ success }) => res.status(200).json({ success }))
     .catch(() => res.status(500).json({ success: false, message: 'An error occured' }))
 ));
